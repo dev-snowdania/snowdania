@@ -1,0 +1,287 @@
+@CHARSET "ISO-8859-1";
+
+body{background:#eee;margin:0;padding:0;}
+
+.tbl-row{
+	clear: both;
+	overflow:auto;
+}
+
+.tbl-cell{
+	float: left;
+	width:20px;
+	height:20px;
+}
+
+#gGame{
+	position:absolute;
+	top:0;left:0;
+	width:1000px;
+	height:590px;
+	background:#000;
+}
+
+#gInfo{
+	position:absolute;
+	top:0;left:0;
+	z-index:1000;
+	background:white;
+	color:black;
+	/*filter:alpha(opacity=50);
+	-moz-opacity:0.5;
+	-khtml-opacity: 0.5;
+	opacity: 0.5;
+	background-color:black;*/
+	width:775px;
+	height:100%;
+	clear:both;
+}
+
+#gMap{
+	float:left;
+	width:600px;
+	height:100%;
+	padding:0;
+	margin:0;
+	overflow:auto;
+	background:black;
+}
+
+#gMap .tbl-row{
+	overflow: hidden;
+}
+
+#gMap .tbl-row div{
+	float: left;
+	width:20px;
+	height:20px;
+	border: 1px solid transparent;
+}
+
+#gMap.grid .tbl-row div{
+	border-right: 1px solid black;
+	border-bottom: 1px solid black;
+}
+
+#gMap .tbl-cell-hover{
+	border: 1px solid red !important;
+}
+
+/*#gMap TD DIV{
+	width: 25px;
+	height: 25px;
+}*/
+
+#gPlayer{
+	float:left;
+	background:#eee;
+	width:200px;
+	height:100%;
+	padding:0;
+	margin:0;
+}
+
+#gPlayer TABLE{
+	border-spacing: 0px;
+	border-collapse: collapse; 
+}
+
+#gPlayer TD{
+	text-align: center;
+	vertical-align: middle; 
+}
+
+#gPlayer BUTTON{
+	width: 25px;
+	height: 25px;
+}
+
+.gPlayerSubPanel{
+	width: 90%;
+	border:1px solid black;
+}
+
+#gSkillPanel{
+	width: 90%;
+	border:1px solid black;
+}
+
+#gSkillPanel .gDropPanelHeader BUTTON{
+	width: 25px;
+}
+
+#gSkillPanel .gDropPanelContent BUTTON{
+	width: 70px;
+}
+
+.gDropPanelHeader{
+	clear:both;
+	width: 100%;
+	height:25px;
+	background-color:gray; 
+}
+.gDropPanelHeaderTitle{
+	width: 79%;
+	overflow:hidden; 
+	float:left;
+	text-align:center;
+}
+.gDropPanelHeaderBtn{
+	width: 20%;
+	float:right;
+}
+
+.gDropPanelContent{
+	clear:both;
+	width: 100%;
+	height:55px;
+	background-color:white;
+	overflow:auto; 
+	display:none;
+}
+
+.gDropPanelContent TABLE{
+	border-spacing: 0px;
+	border-collapse: collapse; 
+}
+
+.gDropPanelContent TD{
+	text-align: center;
+	vertical-align: middle; 
+	border:1px solid black;
+	width:25px;
+	height:25px;
+}
+
+
+#gStatus{
+	/*background-color:#FFF;*/
+	float:left;
+	color:#FFF;
+	width:150px;
+	height:100%;
+	padding:0;
+	margin:0;
+	overflow:auto;
+}
+
+
+
+.gNavBar{
+	background-color:white;
+}
+
+.bg_pl{
+	background: URL("../img/bg_pl.jpg");
+	/*background-color:#CEA177;*/
+}
+
+.bg_mt{
+	background:URL("../img/bg_mo.jpg");
+	/*background-color:#D4C3D3;*/
+}
+
+.bg_ri{
+	background:URL("../img/bg_ri.jpg");
+	/*background-color:#8198AA;*/
+}
+
+.bg_fo{
+	background:URL("../img/bg_fo.jpg");
+	/*background-color:#5D6E06;*/
+}
+
+.bg_ep{
+	background-color:black;
+}
+
+.bg_gr{
+	background-color:#EEE;
+}
+
+#infoBulle
+{
+  display: none;
+  position: absolute;
+  background:red;
+  padding: 6px;
+  padding-left: 12px;
+  padding-right: 12px;
+  color: white;
+  z-index:2000;
+}
+
+#gImagePortraitPanel{
+	float:left;
+	background:#fff;
+	width:90px;
+	height:100px;
+	padding:0;
+	margin:0;
+	border:1px solid black;
+}
+
+#gResumePortraitPanel{
+	float:left;
+	background:#eee;
+	width:90px;
+	height:100px;
+	padding:0;
+	margin:0;
+	margin-left: 10px;
+}
+
+/* Popup */
+#fade { /*--Masque opaque noir de fond--*/
+	display: none; /*--masqué par défaut--*/
+	background: #000;
+	position: fixed; left: 0; top: 0;
+	width: 100%; height: 100%;
+	opacity: .80;
+	z-index: 9999;
+}
+.popup_block{
+	display: none; /*--masqué par défaut--*/
+	background: #fff;
+	padding: 20px;
+	border: 20px solid #ddd;
+	float: left;
+	font-size: 1.2em;
+	position: fixed;
+	top: 50%; left: 50%;
+	z-index: 99999;
+	/*--Les différentes définitions de Box Shadow en CSS3--*/
+	-webkit-box-shadow: 0px 0px 20px #000;
+	-moz-box-shadow: 0px 0px 20px #000;
+	box-shadow: 0px 0px 20px #000;
+	/*--Coins arrondis en CSS3--*/
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+}
+img.btn_close {
+	float: right;
+	margin: -55px -55px 0 0;
+}
+/*--Gérer la position fixed pour IE6--*/
+*html #fade {
+position: absolute;
+}
+*html .popup_block {
+position: absolute;
+}
+
+#gLeftInteractionPanel{
+	float:left;
+	width:45%;
+}
+
+#gLeftInteractionPanel button{
+	clear:both;
+	display:block;
+}
+
+#gRightInteractionPanel{
+	float:left;
+	width:45%;
+}

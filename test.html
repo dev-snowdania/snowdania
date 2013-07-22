@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>AGE OF EMPIRE</title>
+<script src="web/js/prototype/prototype.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+
+<script>
+
+jQuery.noConflict(); 
+
+Object.prototype.compare = function(a, b) {
+	var prop, otype, isOK = true;
+	for (prop in a) {
+		if (a.hasOwnProperty(prop)) {
+			otype = Object.prototype.toString.call(a[prop]).match(/^\[object\s(.*)\]$/)[1];
+			isOK  = (!/^(String|Number|Window)$/.test(otype)) ? arguments.callee(a[prop], b[prop]) : (a[prop] === b[prop]);
+			if (isOK !== true) {
+				break;
+			}
+		}
+	}
+	return isOK;
+};
+
+var jsx = {
+	createClass: function(className,parentClass,obj) {
+
+		var classNames = className.split('.');
+		var path='jsx';var p;
+		for(var i=0;i<(classNames.length-1);i++)
+		{
+			p = eval(path);
+			p[classNames[i]]={};
+			path+='.'+classNames[i];
+		}
+		p = eval(path);
+	
+		var o;
+		if(parentClass!=null) 
+			o = Class.create(parentClass,obj);
+		else
+			o = Class.create(obj);
+
+		if(o.prototype._classes==undefined)
+			o.prototype._classes=new Array();
+		o.prototype._classes.push('jsx.'+className);
+		
+		className=classNames[(classNames.length-1)];
+		o.prototype._class=className;
+		o.prototype._package=path;
+
+
+		o.prototype.isInstanceOf = function(className){
+			var jsClassNames=this._classes.reverse();
+			for(var i=0;i<jsClassNames.length;i++)
+				if(jsClassNames[i]==className) return true;
+			return false;
+		}
+		
+		p[className]=o;
+		
+		return o;
+	}
+};
+
+//Classe mère 
+jsx.createClass("famille.ClasseMere",{ 
+	initialize: function(name) {
+		this.attribut = "attributMere";
+		this.attribut2 = "attribut2";
+		this.name=name;
+	  },
+	methodeA : function() {
+		// code
+		alert('méthode static');
+	},
+ 
+	methodeB : function() {
+		// code
+		;
+	},	
+
+	methodeC : function() {
+		// code
+		alert(this.attribut);
+	},
+
+	setAttribut: function(attr)
+	{
+		this.attribut=attr;
+	},
+
+	getInstance : function()
+	{
+		return this;
+	}
+});
+ 
+ 
+ 
+jsx.createClass("famille.ClasseFille",jsx.famille.ClasseMere, {
+	// Ajout d'une nouvelle méthode
+	initialize: function($super,name) {
+		$super(name);
+	  },
+	methodeC : function($super) {
+		this.attribut+=" g ";
+		$super();
+	}
+ 
+});
+
+jsx.createClass("ClassePetiteFille",jsx.famille.ClasseFille, {
+	// Ajout d'une nouvelle méthode
+	initialize: function($super,name) {
+		$super(name);
+	  },
+	methodeC : function($super) {
+		// code
+		this.attribut+=" z ";
+		$super();
+	}
+ 
+});
+ 
+// Et ça marche !
+var newObjet = new jsx.ClassePetiteFille('test');
+var newObjet2 = new jsx.ClassePetiteFille('test');
+var newObjet3 = newObjet2.getInstance();
+var newObjet4 = Object.clone(newObjet2);
+//newObjet.methodeA();
+//newObjet.methodeC();
+//alert(newObjet.isInstanceOf('jsx.ClasseMere'));
+//alert(newObjet._class);
+//alert(newObjet._package);
+
+/*alert(isObjectsEquals(newObjet, newObjet2));
+
+newObjet2.setAttribut('koala');
+alert(isObjectsEquals(newObjet, newObjet2));
+
+newObjet3.setAttribut('biche');
+alert(isObjectsEquals(newObjet2, newObjet3));
+
+alert(isObjectsEquals(newObjet2, newObjet4));*/
+
+//alert(jsx.ClassePetiteFille.methodeC());
+
+alert(Object.compare(newObjet2,newObjet4))
+
+
+</script>
+
+</head>
+<body>
+</body>
+</html>

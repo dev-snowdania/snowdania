@@ -1,0 +1,180 @@
+@CHARSET "ISO-8859-1";
+
+body{background:#eee;margin:0;padding:0;}
+
+#gInfo{
+	position:absolute;
+	top:0;left:0;
+	z-index:1000;
+	/*filter:alpha(opacity=50);
+	-moz-opacity:0.5;
+	-khtml-opacity: 0.5;
+	opacity: 0.5;
+	background-color:black;*/
+	width:775px;
+	height:95%;
+	clear:both;
+}
+
+#gMap{
+	/*float:right;*/
+	position:absolute;
+	top:0;left:0;
+	z-index:100;
+	width:800px;
+	height:100%;
+	padding:0;
+	margin:0;
+	overflow:auto;
+	background:black;
+}
+
+#gMap TABLE{
+	border-spacing: 0px;
+	border-collapse: collapse; 
+}
+
+#gMap TD{
+	text-align: center;
+	vertical-align: middle; 
+}
+
+#gMap TD DIV{
+	width: 25px;
+	height: 25px;
+}
+
+#gPlayer{
+	float:left;
+	/*background-color:black;*/
+	width:200px;
+	height:80%;
+	padding:0;
+	margin:0;
+}
+
+#gPlayer TABLE{
+	border-spacing: 0px;
+	border-collapse: collapse; 
+}
+
+#gPlayer TD{
+	text-align: center;
+	vertical-align: middle; 
+}
+
+#gPlayer BUTTON{
+	width: 25px;
+	height: 25px;
+}
+
+#gEquipmentPanel{
+	width: 90%;
+	border:1px solid black;
+}
+
+#gSkillPanel{
+	width: 90%;
+	border:1px solid black;
+}
+
+#gSkillPanel .gDropPanelHeader BUTTON{
+	width: 25px;
+}
+
+#gSkillPanel .gDropPanelContent BUTTON{
+	width: 70px;
+}
+
+.gDropPanelHeader{
+	clear:both;
+	width: 100%;
+	height:25px;
+	background-color:gray; 
+}
+.gDropPanelHeaderTitle{
+	width: 79%;
+	overflow:hidden; 
+	float:left;
+	text-align:center;
+}
+.gDropPanelHeaderBtn{
+	width: 20%;
+	float:right;
+}
+
+.gDropPanelContent{
+	clear:both;
+	width: 100%;
+	height:55px;
+	background-color:white;
+	overflow:auto; 
+	display:none;
+}
+
+.gDropPanelContent TABLE{
+	border-spacing: 0px;
+	border-collapse: collapse; 
+}
+
+.gDropPanelContent TD{
+	text-align: center;
+	vertical-align: middle; 
+	border:1px solid black;
+	width:25px;
+	height:25px;
+}
+
+
+#gStatus{
+	/*background-color:#FFF;*/
+	color:#FFF;
+	width:100%;
+	height:20%;
+	clear:both;
+	padding:0;
+	margin:0;
+	overflow:auto;
+}
+
+
+
+.gNavBar{
+	background-color:white;
+}
+
+.bg_pl{
+	background: URL("/web/img/bg_pl.jpg");
+}
+
+.bg_mt{
+	background:URL("/web/img/bg_mo.jpg");
+}
+
+.bg_ri{
+	background:URL("/web/img/bg_ri.jpg");
+}
+
+.bg_fo{
+	background:URL("/web/img/bg_fo.jpg");
+}
+
+.bg_ep{
+	background-color:black;
+}
+
+.bg_gr{
+	background-color:#EEE;
+}
+
+#infoBulle
+{
+  display: none;
+  position: absolute;
+  background:red;
+  padding: 6px;
+  padding-left: 12px;
+  padding-right: 12px;
+  color: white;
+  z-index:2000;
+}
