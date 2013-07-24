@@ -8,5 +8,11 @@ _class= JClass.create( 'JLabel', jsx.JComponent,
 		this.tmpl="<label></label>";
 		this.value=label;
 		this.gField=gField;
+	},
+	
+	drawCustom : function(){
+		if(this.gField){
+			this.jObject.attr("for",this.gField.getId());
+		}
 	}
 });

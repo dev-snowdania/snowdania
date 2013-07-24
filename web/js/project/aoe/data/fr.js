@@ -1,11 +1,50 @@
-﻿
+﻿JClass.import('aoe.util.Dice');
+
 var dataLang={
 	BtnWLab:"W",
 	BtnWInfo:"Ouest",
 	EqBowShort:"BW",
 	EqBowLabel:"arc et flèches",
 	EqBowDesc:"l'arc permet d'attaquer à long portée",
+	EqBowAct:"tirer une flèche",
 	EqBowLog:"félicitation vous avez trouvé un arc! vous pouvez maintenant attaquez vos ennemis à distance",
+	SkHndToHndLabel:"Se battre à main nue",
+	SkHndToHndDesc:"Le combat à main nue vous permet d'utiliser les armes naturelles de votre corps pour vous défendre. Plus la compétence est élevée plus votre maîtrise vous rapproche des maîtres des arts martiaux.",
+	SkHndToHndLog: {qa_perfect:"Coup magistral! le tranchant de votre main coupe la circulation sanguine de votre adversaire au niveau du cou",
+					qa_good: "Réussite! votre pied s'enfonce dans le thorax de votre adversaire",
+					qa_bad: "Echec partiel! Votre poing manque sa cible de peu",
+					qa_worth: "Echec total! votre cheville se tord au moment d'enclencher votre frappe"
+	                },
+    SkRunningLabel:"Course",
+	SkRunningDesc:"La course est une compétence de base que chaque individu possède. Différentes actions peuvent être liées a cette compétence: fuire un combat, pourchasser un individu ou un animal, parcourir de longue distance...",
+	SkRunningLog: {qa_perfect:"Coup magistral! le tranchant de votre main coupe la circulation sanguine de votre adversaire au niveau du cou",
+					qa_good: "Réussite! votre pied s'enfonce dans le thorax de votre adversaire",
+					qa_bad: "Echec! Votre poing manque sa cible de peu",
+					qa_worth: "Echec total! votre cheville se tord au moment d'enclencher votre frappe"
+	                },
+    SkBowUsingLabel:"Arc & Flèche",
+	SkBowUsingDesc:"L'utilisation d'un arc demande beaucoup de concentration et de mentale",
+	SkBowUsingLog: {},
+    ActRunAwayLabel:"Fuire",
+    ActRunAwayDesc:"La fuite est parfois la meilleure solution pour garder la tête sur les épaules.",
+    ActRunAwayLog: {qa_perfect:"Coup magistral! Devant votre agilité et votre endurance, votre adversaire n'a pas vu la racine qui dépassait du sol et tombe lourdement par terre",
+    				qa_v_good: "Réussite parfaite! a rapide coup d'oeil dérrière vous indique que votre adversaire a depuis longtemps abandonné la partie et peine a retrouver son souffle",
+	                qa_good: "Réussite! Votre adversaire n'est plus qu'un mauvais souvenir",
+	                qa_no_qa: "Votre adversaire vous manque de peu, la prochaine fois ça ne sera peut-être pas le cas!",
+	                qa_bad: "Echec partiel! Malgrés un bon tempo votre adversaire vous rattrappe",
+	                qa_v_bad: "Echec complet! hors d'haleine, vous avez du mal a récupérer votre souffle",
+	                qa_worth: "Catastrophe! votre pied trébuche sur élément du décor et vous tord la cheville au passage."
+	                },
+    ActStrikeArrowLabel:"Tirer une flèche",
+    ActStrikeArrowDesc:"Attaquer votre ennemi à distance grâce aux flèches. Arme puissante pouvant tuer un adversaire d'un seul coup",
+    ActStrikeArrowLog: {qa_perfect:"Coup magistral! La flèche transperce votre adversaire de part en part",
+    				qa_v_good: "Réussite parfaite! la flèche atteint un point sensible de votre adversaire",
+	                qa_good: "Réussite! La flèche atteint son but et s'enfonce douloureusement dans son abdomen",
+	                qa_no_qa: "La flèche effleure votre adversaire, juste une égratignure rien de plus",
+	                qa_bad: "Echec partiel! la flèche passe à quelques centimètres de votre adversaire sans l'atteindre",
+	                qa_v_bad: "Echec complet! la flèche vrille et part se briser contre le sol",
+	                qa_worth: "Catastrophe! La corde de votre arc lâche et la flèche se retrouve dans votre pied."
+	                },
 	CaseRivLogErr:"vous ne pouvez pas traverser les rivières. vous avez besoin d'un tapis magique",
 	CaseMtnLogErr:"vous ne pouvez pas traverser les montagnes. vous avez besoin d'un équipement d'alpiniste"
 }

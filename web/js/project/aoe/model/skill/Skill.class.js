@@ -2,18 +2,16 @@ JClass.import('jsx.entities.PropertyChangeSupport');
 
 _class= JClass.create( 'Skill',
 {
-	initialize: function()
-	{
-		this.shortcut=null;
-		this.label=null;
-		this.description=null;
-		this.level=0;
-		this.logMessage='vous avez développé une nouvelle compétence';
+	initialize: function(level){
+		this.code = null;
+		this.label = null;
+		this.description = null;
+		this.level = level;
+		this.logMessage = 'vous avez dÃ©veloppÃ© une nouvelle compÃ©tence';
 		this.pcs = new jsx.PropertyChangeSupport(this);
 	},
 	
-	getPropertyChangeSupport:function()
-	{
+	getPropertyChangeSupport:function(){
 		return this.pcs;
 	},
 	
@@ -47,5 +45,9 @@ _class= JClass.create( 'Skill',
 	
 	getLogMessage : function(){
 		return this.logMessage;
+	},
+	
+	getCode: function(){
+		return this.code;
 	}
 });

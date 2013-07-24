@@ -8,6 +8,7 @@ JClass.import('jsx.jGraphic.table.JTable');
 JClass.import('jsx.util.DGridModel');
 
 JClass.import('aoe.view.EquipmentPanel');
+JClass.import('aoe.view.ResumePortraitPanel');
 //JClass.import('aoe.view.SkillPanel');
 
 _class=JClass.create("PlayerPanel",jsx.JPanel,
@@ -37,7 +38,7 @@ _class=JClass.create("PlayerPanel",jsx.JPanel,
 		this.gImagePortrait=new jsx.JPanel("gImagePortraitPanel","gImagePortraitPanel");
 		this.addComponent(this.gImagePortrait);
 		
-		this.gResumePortrait=new jsx.JPanel("gResumePortraitPanel","gResumePortraitPanel");
+		this.gResumePortrait=new aoe.ResumePortraitPanel(this.controller,this);
 		this.addComponent(this.gResumePortrait);
 	},
 	
@@ -144,7 +145,7 @@ _class=JClass.create("PlayerPanel",jsx.JPanel,
 		
 		this.gEquipPanel = new aoe.EquipmentPanel(this.controller,10,5,'gEquipmentPanel','gPlayerSubPanel');
 		//this.gSkillPanel = new SkillPanel(5,1,"gSkillPanel");
-		this.gEquipPanel.setTitle("Sac à dos");
+		this.gEquipPanel.setTitle("Sac Ã  dos");
 		this.addComponent(this.gEquipPanel);
 		
 		this.gHandPanel = new aoe.EquipmentPanel(this.controller,5,5,'gHandPanel','gPlayerSubPanel');
@@ -152,7 +153,7 @@ _class=JClass.create("PlayerPanel",jsx.JPanel,
 		this.addComponent(this.gHandPanel);
 		
 		this.gSkillPanel = new aoe.EquipmentPanel(this.controller,10,5,'gSkillPanel','gPlayerSubPanel');
-		this.gSkillPanel.setTitle("Compétences");
+		this.gSkillPanel.setTitle("CompÃ©tences");
 		this.addComponent(this.gSkillPanel);
 		
 		this.gFriendPanel = new aoe.EquipmentPanel(this.controller,10,5,'gFriendPanel','gPlayerSubPanel');
@@ -160,13 +161,13 @@ _class=JClass.create("PlayerPanel",jsx.JPanel,
 		this.addComponent(this.gFriendPanel);
 		
 		this.gQuestPanel = new aoe.EquipmentPanel(this.controller,10,5,'gQuestPanel','gPlayerSubPanel');
-		this.gQuestPanel.setTitle("Quêtes");
+		this.gQuestPanel.setTitle("QuÃªtes");
 		this.addComponent(this.gQuestPanel);
 		
-		/*this.gSkillPanel.setTitle("Compétences");
-		this.gSkillPanel.addSkill("SF","Survie en forêt","40");
-		this.gSkillPanel.addSkill("ME","Maniement de l'épée","60");
-		this.gSkillPanel.addSkill("TA","Tir à l'arc","50");
+		/*this.gSkillPanel.setTitle("Compï¿½tences");
+		this.gSkillPanel.addSkill("SF","Survie en forï¿½t","40");
+		this.gSkillPanel.addSkill("ME","Maniement de l'ï¿½pï¿½e","60");
+		this.gSkillPanel.addSkill("TA","Tir ï¿½ l'arc","50");
 		this.gSkillPanel.addSkill("MA","Marchandage","20");
 		this.gSkillPanel.addSkill("EQ","Esquive","60");
 		
@@ -197,9 +198,25 @@ _class=JClass.create("PlayerPanel",jsx.JPanel,
 				var oObject=evt.getNewValue();
 				this.gHandPanel.removeObject(oObject);
 			break;
-			case 'name':
+			case 'surname':
 				var mPlayer=evt.getSource();
-				this.gResumePortrait.getJQuery().text(evt.getNewValue());
+				this.gResumePortrait.getSurnameField().getJQuery().val(evt.getNewValue());
+			break;
+			case 'pdv':
+				var mPlayer=evt.getSource();
+				this.gResumePortrait.getPdvField().getJQuery().val(evt.getNewValue());
+			break;
+			case 'arg':
+				var mPlayer=evt.getSource();
+				this.gResumePortrait.getArgField().getJQuery().val(evt.getNewValue());
+			break;
+			case 'atd':
+				var mPlayer=evt.getSource();
+				this.gResumePortrait.getAttitudeField().getJQuery().val(evt.getNewValue());
+			break;
+			case 'pop':
+				var mPlayer=evt.getSource();
+				this.gResumePortrait.getPopularityField().getJQuery().val(evt.getNewValue());
 			break;
 			case 'img':
 				var mPlayer=evt.getSource();

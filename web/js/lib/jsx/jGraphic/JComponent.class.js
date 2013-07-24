@@ -155,6 +155,10 @@ _class= JClass.create( 'JComponent',
 			}
 			this.setJValue();
 			
+			if(typeof this.drawCustom=='function'){
+				this.drawCustom();
+			}
+			
 			if(this.attr.size()>0){
 				this.attr.each(function(p){
 					this.jObject.attr(p.key,p.value);

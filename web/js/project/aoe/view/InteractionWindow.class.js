@@ -5,11 +5,11 @@ JClass.import('aoe.view.RightInteractionPanel');
 
 _class=JClass.create("InteractionWindow",jsx.JWindow,
 {
-	initialize:function($super,width,player1,player2){
+	initialize:function($super,width,player1,actions1,player2,actions2){
 		$super("popupInteraction","popup_block",width);
 		
-		this.leftInteractionPanel= new aoe.LeftInteractionPanel(this,player1);
-		this.rightInteractionPanel= new aoe.RightInteractionPanel(this,player2);
+		this.leftInteractionPanel= new aoe.LeftInteractionPanel(this,player1,actions1);
+		this.rightInteractionPanel= new aoe.RightInteractionPanel(this,player2,actions2);
 	},
 	
 	getLeftInteractionPanel:function(){

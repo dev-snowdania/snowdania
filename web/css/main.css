@@ -1,6 +1,15 @@
+/**
+ * Global css styles
+ */
+
 @CHARSET "ISO-8859-1";
 
-body{background:#eee;margin:0;padding:0;}
+body{
+	background:#eee;
+	margin:0;
+	padding:0;
+	font-family: verdana, arial;
+}
 
 .tbl-row{
 	clear: both;
@@ -13,10 +22,37 @@ body{background:#eee;margin:0;padding:0;}
 	height:20px;
 }
 
+div.gSep{
+	clear: both;
+	height: 1px;
+}
+
+label.gLabelFld{
+	float:left;
+}
+
+input.gFld,
+textarea.gFld,
+select.gFld{
+	float:left;
+	width:100px;
+}
+
+input.gReadOnlyFld,
+textarea.gReadOnlyFld,
+select.gReadOnlyFld{
+	background: none;
+	border:0;
+}
+
+/**
+ * Specific css styles
+ */
+
 #gGame{
 	position:absolute;
 	top:0;left:0;
-	width:1000px;
+	width:100%;
 	height:590px;
 	background:#000;
 }
@@ -39,7 +75,7 @@ body{background:#eee;margin:0;padding:0;}
 
 #gMap{
 	float:left;
-	width:600px;
+	width:850px;
 	height:100%;
 	padding:0;
 	margin:0;
@@ -79,6 +115,10 @@ body{background:#eee;margin:0;padding:0;}
 	height:100%;
 	padding:0;
 	margin:0;
+}
+
+#gPlayer .tbl-row{
+	overflow:hidden;
 }
 
 #gPlayer TABLE{
@@ -284,4 +324,10 @@ position: absolute;
 #gRightInteractionPanel{
 	float:left;
 	width:45%;
+}
+
+#gResumePortraitPanel input.gFld,
+#gResumePortraitPanel textarea.gFld,
+#gResumePortraitPanel select.gFld{
+	width:50px;
 }

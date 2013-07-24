@@ -2,18 +2,17 @@ JClass.import('jsx.entities.PropertyChangeSupport');
 
 _class= JClass.create( 'ObservableList',
 {
-	initialize: function()
-	{
-		this.elements=[];
+	initialize: function(){
+		this.elements = [];
+		this.searchIndexes = {};
 		this.index = -1;		
-		this.addEventKey='addElement';
-		this.removeEventKey='removeElement';
+		this.addEventKey = 'addElement';
+		this.removeEventKey = 'removeElement';
 		
 		this.pcs = new jsx.PropertyChangeSupport(this);
 	},
 	
-	getPropertyChangeSupport:function()
-	{
+	getPropertyChangeSupport:function(){
 		return this.pcs;
 	},
 	
@@ -30,18 +29,36 @@ _class= JClass.create( 'ObservableList',
 		return (this.elements.length);
 	},
 	
-	add : function(pElement){
+	add : function(pElement,pKey){
 		this.elements.push(pElement);
+		if(pKey){
+			this.searchIndexes[pKey] = pElement;
+		}
 		this.pcs.firePropertyChange(this.addEventKey,null,pElement);
 	},
 	
-	remove : function(pElement){
+	remove : function(pElement,pKey){
 		this.elements.splice(this.elements.indexOf(pElement), 1);
+		if(pKey){
+			this.searchIndexes[pKey] = null;
+		}
 		this.pcs.firePropertyChange(this.removeEventKey,null,pElement);
 	},
 	
-	get: function(i){
-		return this.elements[i];
+	get: function(pKey){
+		if(typeof pKey == 'string'){
+			return this.searchIndexes[pKey];
+		}else{
+			return this.elements[i];
+		}
+	},
+	
+	has: function(pKey){
+		if(this.searchIndexes[pKey]){
+			return this.searchIndexes[pKey];
+		}else{
+			return false;
+		}
 	},
 	
 	next: function(){

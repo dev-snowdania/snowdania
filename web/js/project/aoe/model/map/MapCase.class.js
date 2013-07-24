@@ -10,9 +10,9 @@ _class= JClass.create( 'MapCase',
 		this.currentPlayer=null;
 		this.className='';
 		this.interactions=[];
-		// message si première entrée sur une case de ce type 
+		// message si premiï¿½re entrï¿½e sur une case de ce type 
 		this.logMessage=null;
-		// message si tentative de déplacement en échec
+		// message si tentative de dï¿½placement en ï¿½chec
 		this.logMsgMoveErr=null;
 	},
 
@@ -86,11 +86,14 @@ _class= JClass.create( 'MapCase',
 			// interactions
 			this.interactions.each(function(a){
 				var proba=a[0];
-				var res=Dice.throwD100(proba);
-				if(res[1]>=0){
+				var diceThrow=Dice.throwD100(proba);
+				//console.log(diceThrow);
+				if(diceThrow.succeed){
 					// l'interaction a lieu
 					var oInter = a[1];
-					oInter.interact(player);
+					//console.log('interact!');
+					//oInter.interact(player);
+					MVC.doAction('aoe.controller.InteractionController','showPopup',[player,oInter]);
 					throw $break;
 				}
 			},this);
@@ -100,7 +103,7 @@ _class= JClass.create( 'MapCase',
 				this.objects.each(function(oObject){
 					var r = confirm("Voulez-vous ramasser "+oObject.getLabel()+"?");
 					if(r){
-						player.getBackpack().addEquipement(oObject);
+						player.getCurrentHand().add(oObject,oObject.getJsClassName());
 						this.removeObject(oObject);
 						var oLog=MVC.getCacheInstance().getObject('uneGameLog');
 						oLog.addMessage(oObject.getLogMessage());

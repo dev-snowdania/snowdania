@@ -8,46 +8,43 @@ _class= JClass.create( 'Equipment',
 		this.label=null;
 		this.description=null;
 		this.unit=0;
-		this.logMessage='vous avez trouvé un objet';
+		this.logMessage='vous avez trouvÃ© un objet';
 		this.pcs = new jsx.PropertyChangeSupport(this);
 	},
 	
-	getPropertyChangeSupport:function()
-	{
+	getPropertyChangeSupport:function(){
 		return this.pcs;
 	},
 	
-	getShortcut: function()
-	{
+	getShortcut: function(){
 		return this.shortcut;
 	},
 	
-	getLabel : function()
-	{
+	getLabel : function(){
 		return this.label;
 	},
 	
-	getDescription : function()
-	{
+	getDescription : function(){
 		return this.description;
 	},
 	
-	getUnit : function()
-	{
+	getUnit : function(){
 		return this.unit;
 	},
 	
-	useUnit : function()
-	{
+	useUnit : function(i){
 		if(this.unit>0) {
-			var oldUnit=this.unit;
-			this.unit--;
-			this.pcs.firePropertyChange('unit',oldUnit,this.unit);
+			this.setUnit((this.unit-i));
 		}
 	},
 	
-	getLogMessage : function()
-	{
+	setUnit : function(pUnit){
+		var oldUnit=this.unit;
+		this.unit = pUnit;
+		this.pcs.firePropertyChange('unit',oldUnit,this.unit);
+	},
+	
+	getLogMessage : function(){
 		return this.logMessage;
 	}
 });

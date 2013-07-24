@@ -27,12 +27,12 @@ _class=JClass.create("GameController",{
 	},
 	
 	showMap : function(){
-		// dessine le jeu
+		// draw the map
 		this.ihmArea.draw();
 		
 		var mapPanel= this.ihmArea.getMapPanel();
 		var playerPanel= this.ihmArea.getPlayerPanel();
-		var equipPanel= playerPanel.getEquipmentPanel();//alert("fôrét".utf8Encode());
+		var equipPanel= playerPanel.getEquipmentPanel();
 		
 		//on associe les listeners
 		this.map.getPropertyChangeSupport().addListener(this);
@@ -55,7 +55,7 @@ _class=JClass.create("GameController",{
 		}
 		catch(e){throw e;}
 		
-		this.zoom(-40);
+		//this.zoom(-40);
 	},
 	
 	showMapView : function(pMap){
@@ -157,14 +157,14 @@ _class=JClass.create("GameController",{
 	
 	switchEquipmentToHand : function(pObject)
 	{
-		this.currentPlayer.getBackpack().removeEquipement(pObject);
-		this.currentPlayer.getCurrentHand().addEquipement(pObject);
+		this.currentPlayer.getBackpack().remove(pObject);
+		this.currentPlayer.getCurrentHand().add(pObject);
 	},
 	
 	switchHandToEquipment : function(pObject)
 	{
-		this.currentPlayer.getCurrentHand().removeEquipement(pObject);
-		this.currentPlayer.getBackpack().addEquipement(pObject);
+		this.currentPlayer.getCurrentHand().remove(pObject);
+		this.currentPlayer.getBackpack().add(pObject);
 	},
 	
 	propertyChange : function(evt){
@@ -183,7 +183,7 @@ _class=JClass.create("GameController",{
 					var y = parseInt(k[1]);
 					var gCase=gTable.getCase(y,x);
 					
-					//on associe la case model à la case graphique
+					//on associe la case model ï¿½ la case graphique
 					if(gCase!=null){
 						mCase.getPropertyChangeSupport().addListener(gCase);
 					}
@@ -196,7 +196,7 @@ _class=JClass.create("GameController",{
 				
 				map.movePlayer(this.currentPlayer,map.getPlayerPosX(),map.getPlayerPosY());
 				map.revealAllCases();
-				/* mise à l'échelle de la carte */
+				/* mise ï¿½ l'ï¿½chelle de la carte */
 				mapPanel.resizeCaseTo(GameConfig.getCaseWidth(),GameConfig.getCaseHeight());
 			break;
 		}		

@@ -1,6 +1,6 @@
 ﻿JClass.import('aoe.model.interaction.Interaction');
 
-JClass.import('aoe.model.Skill');
+JClass.import('aoe.model.skill.Skill');
 JClass.import('aoe.model.SkillManager');
 
 _class= JClass.create( 'MeuteLoupsAffames', aoe.Interaction,
@@ -14,7 +14,7 @@ _class= JClass.create( 'MeuteLoupsAffames', aoe.Interaction,
 		
 		this.skills = new aoe.SkillManager();
 		
-		var griffer	= new aoe.Skill();
+		/*var griffer	= new aoe.Skill();
 		griffer.setLabel('Griffer');
 		griffer.setDescription('se battre avec les griffe');
 		griffer.setLevel(2);
@@ -24,7 +24,7 @@ _class= JClass.create( 'MeuteLoupsAffames', aoe.Interaction,
 		mordre.setLabel('Mordre');
 		mordre.setDescription('attaque avec la gueule');
 		mordre.setLevel(2);
-		this.skills.add(mordre);
+		this.skills.add(mordre);*/
 	},
 	
 	getName : function(){
