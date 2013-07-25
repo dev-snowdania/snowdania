@@ -331,3 +331,7 @@ position: absolute;
 #gResumePortraitPanel select.gFld{
 	width:50px;
 }
+
+.gInteractionPanelActive{
+	background : red;
+}

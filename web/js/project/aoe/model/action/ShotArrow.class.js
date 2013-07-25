@@ -25,7 +25,7 @@ _class= JClass.create( 'ShotArrow', aoe.Action,
 	
 	postExecute : function(pResult, pDiceThrow){
 		var equipment = this.context.get('equipment');
-		var landscape = this.context.get('landscape');
+		var mapCase = this.context.get('mapCase');
 		var player = this.context.get('player');
 		var interaction = this.context.get('interaction');
 		var skill = this.context.get('skill');

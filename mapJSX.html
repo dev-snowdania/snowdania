@@ -38,6 +38,15 @@ var aoe={
 
 jQuery.noConflict();
 
+jQuery.fn.center = function () {
+    this.css("position","absolute");
+    this.css("top", Math.max(0, ((jQuery(window).height() - jQuery(this).outerHeight()) / 2) + 
+    		jQuery(window).scrollTop()) + "px");
+    this.css("left", Math.max(0, ((jQuery(window).width() - jQuery(this).outerWidth()) / 2) + 
+    		jQuery(window).scrollLeft()) + "px");
+    return this;
+}
+
 jQuery(document).ready(function(){
 	try
 	{
@@ -47,6 +56,24 @@ jQuery(document).ready(function(){
 	}
 	catch(e) {alert(e);}
 });
+
+jQuery(document).ready(function(e){
+
+	jQuery('BODY').append(jQuery('<div></div>').attr('id','infoBulle'));
+	jQuery('[infobulle]').live('mouseenter mouseleave',function(e){
+		if (e.type == 'mouseenter') {
+			jQuery('#infoBulle').css('z-index',1000);
+		    jQuery('#infoBulle').text(jQuery(this).attr('infobulle')).css('top', e.pageY+10).css('left', e.pageX+10).css('zIndex',1000).fadeIn();
+		} else {
+			if (e.type == 'mouseleave') {
+				jQuery('#infoBulle').fadeOut();
+			}
+			else {
+				jQuery('#infoBulle').css('top', e.pageY).css('left', e.pageX+10);
+			}
+		}
+	});
+})
 
 //JClass.import('aoe.controller.GameController','showMap','une map');
 </script>

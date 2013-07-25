@@ -11,12 +11,16 @@ _class= JClass.create( 'Interaction',
 		return this.pcs;
 	},
 	
+	setActionManager:function(pActManager){
+		this.actionManager = pActManager;
+	},
+	
 	interact: function(player){
-		/*MVC.getCacheInstance().getObject('uneGameLog').addMessage(this.logMsg);
 		
-		var popup = new aoe.InteractionWindow(500,player,this);
-		popup.draw();
-		popup.show();*/
+		if(this.actionManager){
+			var action = this.actionManager.get("DoNothing");
+			MVC.doAction('aoe.controller.InteractionController','executeAction',[action]);
+		}
 	},
 	
 	wound : function(damage){

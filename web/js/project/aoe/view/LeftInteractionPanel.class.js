@@ -8,7 +8,8 @@ _class=JClass.create("LeftInteractionPanel",aoe.InteractionPanel,
 		$super("gLeftInteractionPanel","gPanel",pWindow,pPlayer,pActions);
 		
 		this.gLabel=new jsx.JLabel(this.player.getName(),null,"gLabelInteractionPlayer");
-		this.addComponent(this.gLabel);
+		
+		this.interactiveButtons = [];
 		
 		this.actions.reset();
 		var act;
@@ -26,7 +27,37 @@ _class=JClass.create("LeftInteractionPanel",aoe.InteractionPanel,
 			btn.addEventListener("click",function(e,action){
 				MVC.doAction('aoe.controller.InteractionController','executeAction',[action]);
 			},act);
-			this.addComponent(btn);
+			
+			//this.addComponent(btn);
+			this.interactiveButtons.push(btn);
 		}
+	},
+	
+	activate: function($super){
+		$super();
+		
+		this.interactiveButtons.each(function(pBtn,i){
+			pBtn.setReadOnly(false);
+		},this);
+	},
+	
+	desactivate: function($super){
+		$super();
+		
+		this.interactiveButtons.each(function(pBtn,i){
+			pBtn.setReadOnly(true);
+		},this);
+	},
+	
+	draw : function($super){
+		
+		this.addComponent(this.gLabel);
+		
+		this.interactiveButtons.each(function(pBtn,i){
+			this.addComponent(pBtn);
+		},this);
+		
+			
+		$super();
 	}
 });

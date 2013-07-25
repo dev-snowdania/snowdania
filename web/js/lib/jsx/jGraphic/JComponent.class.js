@@ -122,11 +122,37 @@ _class= JClass.create( 'JComponent',
 		this.jsxEvts.push([evtName,func,ctxObject]);
 	},
 	
+	eraser : function(){
+		if(this.jObject){
+			this.jObject.remove();
+		}
+		this.jObject = null;
+		
+		if(this.subComponents.length>0){
+			for(var i=0;i<this.subComponents.length;i++){
+				this.subComponents[i].eraser();
+			}
+		}
+	},
+	
 	clean : function(){
+		
+		if(this.subComponents.length>0){
+			for(var i=0;i<this.subComponents.length;i++){
+				this.subComponents[i].eraser();
+			}
+		}
+		
 		this.subComponents=[];
+		
 		if(this.jObject){
 			this.jObject.html('');
 		}
+	},
+	
+	redraw : function(){
+		this.clean();
+		this.draw();
 	},
 	
 	draw : function(){
@@ -209,21 +235,3 @@ _class= JClass.create( 'JComponent',
 		}
 	}
 });
-
-jQuery(document).ready(function(e){
-
-	jQuery('BODY').append(jQuery('<div></div>').attr('id','infoBulle'));
-	jQuery('[infobulle]').live('mouseenter mouseleave',function(e){
-		if (e.type == 'mouseenter') {
-			jQuery('#infoBulle').css('z-index',1000);
-		    jQuery('#infoBulle').text(jQuery(this).attr('infobulle')).css('top', e.pageY+10).css('left', e.pageX+10).css('zIndex',1000).fadeIn();
-		} else {
-			if (e.type == 'mouseleave') {
-				jQuery('#infoBulle').fadeOut();
-			}
-			else {
-				jQuery('#infoBulle').css('top', e.pageY).css('left', e.pageX+10);
-			}
-		}
-	});
-})

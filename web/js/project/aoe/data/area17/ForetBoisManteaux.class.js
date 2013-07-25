@@ -8,6 +8,10 @@ _class= JClass.create( 'ForetBoisManteaux', aoe.ForestCase,
 		$super();
 		this.logMessage= aoe.getLang('LogForetBoisManteaux');
 		
+
+		this.visibility = 20;
+		this.strength = 10;
+		
 		var inter1 = new aoe.MeuteLoupsAffames();
 		this.interactions.push([50,inter1]);
 	}

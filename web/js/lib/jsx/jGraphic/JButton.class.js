@@ -2,26 +2,31 @@ JClass.import('jsx.jGraphic.JComponent');
 
 _class= JClass.create( 'JButton', jsx.JComponent,
 {
-	initialize: function($super,label,id,className)
-	{
+	initialize: function($super,label,id,className){
 		$super(id,className);
 		this.tmpl="<button></button>";
 		this.setValue(label);
 		this.toggleFunc=null;
 	},
 	
-	setLabel : function(label)
-	{
+	setLabel : function(label){
 		this.setValue(label);
 	},
 	
-	getLabel : function()
-	{
+	getLabel : function(){
 		return this.getValue();
 	},
 	
-	setToggleBehavior : function(funcs)
-	{
+	setReadOnly : function(bool){
+		
+		this.readOnly = bool;
+		
+		if(this.jObject!=null){
+			this.jObject.attr('disabled',bool);
+		}
+	},
+	
+	setToggleBehavior : function(funcs){
 		this.toggleFunc=funcs;
 		if(this.jObject!=null)
 		{
@@ -32,8 +37,7 @@ _class= JClass.create( 'JButton', jsx.JComponent,
 		}
 	},
 	
-	draw : function($super)
-	{
+	draw : function($super){
 		$super();
 		if(this.toggleFunc) this.setToggleBehavior(this.toggleFunc);
 	}

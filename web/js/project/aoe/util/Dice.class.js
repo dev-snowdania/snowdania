@@ -48,15 +48,12 @@ Dice = {
 				else {
 					diff = Math.abs(diff);
 					succeed = false;
-					if(diff<20) {
-						q=Dice.NO_QUALITY;
-					}else{
-						if(diff<40) {
-							q=Dice.QUALITY_BAD;
-						}else {
-							if(diff<80) q=Dice.QUALITY_VERY_BAD;
-							else q=Dice.QUALITY_WORTH;
-						}
+					
+					if(diff<40) {
+						q=Dice.QUALITY_BAD;
+					}else {
+						if(diff<80) q=Dice.QUALITY_VERY_BAD;
+						else q=Dice.QUALITY_WORTH;
 					}
 				}
 			}

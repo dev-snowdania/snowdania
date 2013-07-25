@@ -1,8 +1,7 @@
 
 _class=JClass.create("PropertyChangeEvent",{
 	
-	initialize : function(model,propName,oldValue,newValue,contextValues)
-	{
+	initialize : function(model,propName,oldValue,newValue,contextValues){
 		this.source = model;
 		this.propName=propName;
 		this.oldValue=oldValue;
@@ -10,28 +9,23 @@ _class=JClass.create("PropertyChangeEvent",{
 		this.contextValues=new Hash(contextValues);
 	},
 	
-	getSource : function()
-	{
+	getSource : function(){
 		return this.source;
 	},
 	
-	getPropertyName : function()
-	{
+	getPropertyName : function(){
 		return this.propName;
 	},
 	
-	getOldValue : function()
-	{
+	getOldValue : function(){
 		return this.oldValue;
 	},
 	
-	getNewValue : function()
-	{
+	getNewValue : function(){
 		return this.newValue;
 	},
 	
-	getContextValue : function(k)
-	{
+	getContextValue : function(k){
 		return this.contextValues.get(k);
 	}
 });

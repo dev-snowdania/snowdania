@@ -83,6 +83,10 @@ _class= JClass.create( 'Action',
 		console.log(diceThrow);
 		console.log(result);
 		
+		//var interactiveSession = this.context.get('interactiveSession');
+		
+		//MVC.doAction('aoe.controller.InteractionController','playOpponent',[]);
+		
 		return result;
 	}
 });

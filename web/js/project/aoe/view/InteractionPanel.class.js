@@ -17,6 +17,18 @@ _class=JClass.create("InteractionPanel",jsx.JPanel,
 		;
 	},
 	
+	activate: function(){
+		if(this.jObject){
+			this.jObject.addClass("gInteractionPanelActive");
+		}
+	},
+	
+	desactivate: function(){
+		if(this.jObject){
+			this.jObject.removeClass("gInteractionPanelActive");
+		}
+	},
+	
 	propertyChange: function(evt){
 		switch(evt.getPropertyName())
 		{

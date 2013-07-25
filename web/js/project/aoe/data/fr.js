@@ -45,6 +45,16 @@ var dataLang={
 	                qa_v_bad: "Echec complet! la flèche vrille et part se briser contre le sol",
 	                qa_worth: "Catastrophe! La corde de votre arc lâche et la flèche se retrouve dans votre pied."
 	                },
+    ActDoNothingLabel:"Ne rien faire",
+    ActDoNothingDesc:"Ne rien faire est parfois une bonne solution pour temporiser et laisser votre interaction agir",
+    ActDoNothingLog: {qa_perfect:"Coup magistral! ne rien faire",
+    				qa_v_good: "Réussite parfaite! ne rien faire",
+	                qa_good: "Réussite! ne rien faire",
+	                qa_no_qa: "ne rien faire",
+	                qa_bad: "Echec partiel! ne rien faire",
+	                qa_v_bad: "Echec complet! ne rien faire",
+	                qa_worth: "Catastrophe! ne rien faire"
+	                },
 	CaseRivLogErr:"vous ne pouvez pas traverser les rivières. vous avez besoin d'un tapis magique",
 	CaseMtnLogErr:"vous ne pouvez pas traverser les montagnes. vous avez besoin d'un équipement d'alpiniste"
 }
