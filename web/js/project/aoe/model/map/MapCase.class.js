@@ -14,61 +14,66 @@ _class= JClass.create( 'MapCase',
 		this.logMessage=null;
 		// message si tentative de d�placement en �chec
 		this.logMsgMoveErr=null;
+		
+		this.visibility = 100;
 	},
 
-	getPropertyChangeSupport:function(){
+	getPropertyChangeSupport: function(){
 		return this.pcs;
 	},
 	
-	getClassName : function(){
+	getClassName: function(){
 		if(this.revealed)
 			return this.className;
 		else return "bg_ep";
 	},
 	
-	getLogMessage : function(){
+	getVisibility: function(){
+		return this.visibility;
+	},
+	
+	getLogMessage: function(){
 		return this.logMessage;
 	},
 	
-	setRevealed: function(pBool)
-	{
+	setRevealed: function(pBool){
 		var oldValue=this.revealed;
 		this.revealed=pBool;
 		this.pcs.firePropertyChange('revealed',oldValue,this.revealed,{});
 	},
 	
-	hasObject:function(){
+	hasObject: function(){
 		return (this.objects.length>0);
 	},
 	
-	addObject : function(oObject){
+	addObject: function(oObject){
 		this.objects.push(oObject);
 	},
 	
-	removeObject : function(pObject){
+	removeObject: function(pObject){
 		this.objects.splice(this.objects.indexOf(pObject), 1);
 	},
 	
-	getObject : function(i){
+	getObject: function(i){
 		return this.objects[i];
 	},
 	
-	setCurrentPlayer:function(pPlayer){
+	setCurrentPlayer: function(pPlayer){
 		this.currentPlayer=pPlayer;
 		this.pcs.firePropertyChange('currentPlayer',null,this.currentPlayer);
 	},
 	
-	hasCurrentPlayer:function(){
+	hasCurrentPlayer: function(){
 		return (this.currentPlayer!=null);
 	},
 	
-	removePlayer : function(player){
+	removePlayer: function(player){
 		//this.currentPlayer=null;
 		//this.pcs.firePropertyChange('playerLeaveCase',{});
 		this.setCurrentPlayer(null);
 	},
 	
-	movePlayer : function(player,mCaseOld){
+	movePlayer: function(player,mCaseOld){
 		var b=this.tryMove(player);
 		if(b){
 			if(mCaseOld!=null){
@@ -91,22 +96,30 @@ _class= JClass.create( 'MapCase',
 				if(diceThrow.succeed){
 					// l'interaction a lieu
 					var oInter = a[1];
-					//console.log('interact!');
 					//oInter.interact(player);
-					MVC.doAction('aoe.controller.InteractionController','showPopup',[player,oInter]);
+					MVC.doAction('aoe.controller.InteractionController','showPopup',[player,oInter,this]);
 					throw $break;
 				}
 			},this);
-			
 			
 			if(this.hasObject()){
 				this.objects.each(function(oObject){
 					var r = confirm("Voulez-vous ramasser "+oObject.getLabel()+"?");
 					if(r){
-						player.getCurrentHand().add(oObject,oObject.getJsClassName());
-						this.removeObject(oObject);
-						var oLog=MVC.getCacheInstance().getObject('uneGameLog');
-						oLog.addMessage(oObject.getLogMessage());
+						if(player.getCurrentHand().addObject(oObject)){
+							this.removeObject(oObject);
+							var oLog=MVC.getCacheInstance().getObject('uneGameLog');
+							oLog.addMessage(oObject.getLogMessage());
+						}else{
+							var r2 = confirm("Vos deux mains sont prises, voulez-vous ranger "+oObject.getLabel()+" dans votre sac?");
+							if(r2){
+								if(player.getBackpack().addObject(oObject)){
+									this.removeObject(oObject);
+									var oLog=MVC.getCacheInstance().getObject('uneGameLog');
+									oLog.addMessage(oObject.getLogMessage());
+								}
+							}
+						}
 					}
 				},this);
 				
@@ -119,7 +132,7 @@ _class= JClass.create( 'MapCase',
 		return b;
 	},
 	
-	tryMove : function(player){
+	tryMove: function(player){
 		return true;
 	}
 	

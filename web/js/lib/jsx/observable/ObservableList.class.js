@@ -35,6 +35,8 @@ _class= JClass.create( 'ObservableList',
 			this.searchIndexes[pKey] = pElement;
 		}
 		this.pcs.firePropertyChange(this.addEventKey,null,pElement);
+		
+		return true;
 	},
 	
 	remove : function(pElement,pKey){
@@ -43,13 +45,23 @@ _class= JClass.create( 'ObservableList',
 			this.searchIndexes[pKey] = null;
 		}
 		this.pcs.firePropertyChange(this.removeEventKey,null,pElement);
+		
+		return true;
 	},
 	
 	get: function(pKey){
 		if(typeof pKey == 'string'){
-			return this.searchIndexes[pKey];
+			if(this.searchIndexes[pKey]){
+				return this.searchIndexes[pKey];
+			}else{
+				return null;
+			}
 		}else{
-			return this.elements[i];
+			if(this.elements[i]){
+				return this.elements[i];
+			}else{
+				return null;
+			}
 		}
 	},
 	
@@ -94,5 +106,13 @@ _class= JClass.create( 'ObservableList',
 	
 	hasListener : function(){
 		return this.pcs.hasListeners();
+	},
+	
+	fireInitialProperties : function(){
+		this.reset();
+		var el;
+		while(el=this.next()){
+			this.pcs.firePropertyChange(this.addEventKey,null,el);
+		}
 	}
 });

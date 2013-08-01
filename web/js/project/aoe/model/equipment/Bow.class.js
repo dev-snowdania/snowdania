@@ -1,18 +1,8 @@
-JClass.import('aoe.model.equipment.Equipment');
+JClass.import('aoe.model.equipment.RangeWeapon');
 
-_class= JClass.create( 'Bow', aoe.Equipment,
+_class= JClass.create( 'Bow', aoe.RangeWeapon,
 {
-	initialize: function($super){
-		$super();
-		this.shortcut = aoe.getLang('EqBowShort');
-		this.label = aoe.getLang('EqBowLabel');
-		this.description = aoe.getLang('EqBowDesc');
-		this.logMessage = aoe.getLang('EqBowLog');
-		this.unit = 10;
-		this.strength = 100;
-	},
-	
-	getStrength: function(){
-		return this.strength;
+	initialize: function($super,pQuality){
+		$super(aoe.Equipment.TWO_HANDS,50,10,70,[5,50],3,this.getJsClassName());
 	}
 });

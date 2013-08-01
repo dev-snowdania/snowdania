@@ -1,63 +1,69 @@
 JClass.import('jsx.entities.PropertyChangeSupport');
 
+//managers
 JClass.import('aoe.model.EquipmentManager');
+JClass.import('aoe.model.SkillManager');
 
-JClass.import('aoe.model.skill.HandToHand');
+//Equipment
+JClass.import('aoe.model.equipment.Sword');
+JClass.import('aoe.model.equipment.Backpack');
+
+//skills
+JClass.import('aoe.model.skill.Fencing');
+JClass.import('aoe.model.skill.Wrestling');
 JClass.import('aoe.model.skill.Running');
 JClass.import('aoe.model.skill.Archery');
-JClass.import('aoe.model.SkillManager');
+JClass.import('aoe.model.skill.Stealth');
+JClass.import('aoe.model.skill.Concentrate');
+
 
 _class= JClass.create( 'Player',
 {
-	ATTITUDE_NEUTRAL: 0,
-	ATTITUDE_SOCIAL: 1,
-	ATTITUDE_FRIENDLY: 2,
-	ATTITUDE_HOSTILE: -1,
-	ATTITUDE_AGRESSIVE: -2,
-	
 	initialize: function(type){
 		
-		this.name=null;
-		this.img=null;
-		this.score=0;
-		this.force=40;
-		this.dexterite=40;
-		this.intelligence=40;
-		this.pointVie=1000;
-		this.pointMagie=0;
-		this.argent=0;
-		this.popularity=0;
-		this.attitude= this.ATTITUDE_NEUTRAL;
-		this.pointExperience=0;
-		this.lang=null;
-		this.posX=-1;
-		this.posY=-1;
+		this.name = null;
+		this.img = null;
+		this.score = 0;
+		this.force = 40;
+		this.dexterite = 40;
+		this.intelligence = 40;
+		this.pointVie = 1000;
+		this.pointMagie = 0;
+		this.argent = 0;
+		this.popularity = 0;
+		this.attitude = aoe.Player.ATTITUDE_NEUTRAL;
+		this.pointExperience = 0;
+		this.speed = 5; // in kilometer per hour
+		this.lang = null;
+		this.posX = -1;
+		this.posY = -1;
 		
 		this.skills = new aoe.SkillManager();
 		
-		var bagarre = new aoe.HandToHand(10);
-		this.skills.add(bagarre,bagarre.getJsClassName());
+		var fencing = new aoe.Fencing(40);
+		this.skills.add(fencing,fencing.getJsClassName());
 		
-		var run = new aoe.Running(10);
+		var wrestling = new aoe.Wrestling(10);
+		this.skills.add(wrestling,wrestling.getJsClassName());
+		
+		var run = new aoe.Running(80);
 		this.skills.add(run,run.getJsClassName());
 		
-		var archery = new aoe.Archery(10);
+		var concentrate = new aoe.Concentrate(40);
+		this.skills.add(concentrate,concentrate.getJsClassName());
+		
+		var archery = new aoe.Archery(50);
 		this.skills.add(archery,archery.getJsClassName());
-		
-		/*var fuir = new aoe.Skill();
-		fuir.setLabel('Fuir');
-		fuir.setDescription('fuir un combat');
-		fuir.setLevel(1);
-		this.skills.add(fuir);
-		
-		var marchander = new aoe.Skill();
-		marchander.setLabel('Marchander');
-		marchander.setDescription('pouvoir de négociation');
-		marchander.setLevel(1);
-		this.skills.add(marchander);*/
 		
 		this.backpack=new aoe.EquipmentManager();
 		this.backpack.setEventKeys('addEquipment','removeEquipment');
+		
+		var backpack = new aoe.Backpack();
+		this.backpack.setContainer(backpack);
+		
+		var sword = new aoe.Sword();
+		this.backpack.addObject(sword);
+		
 		this.currentHand=new aoe.EquipmentManager();
 		this.currentHand.setEventKeys('addHandEquipment','removeHandEquipment');
 		
@@ -83,6 +89,14 @@ _class= JClass.create( 'Player',
 	getPosY : function()
 	{
 		return this.posY;
+	},
+	
+	getSpeed : function(turn){
+		if(turn){
+			return Math.ceil(((this.speed*1000)/3600)*3);
+		}else{
+			return this.speed;
+		}
 	},
 	
 	setName : function(name){
@@ -117,6 +131,17 @@ _class= JClass.create( 'Player',
 
 	setScore : function(score){
 		this.score=score;
+	},
+	
+	setActionManager:function(pActManager){
+		this.actionManager = pActManager;
+	},
+	
+	getActionManager:function(pReset){
+		if(pReset){
+			this.actionManager.reset();
+		}
+		return this.actionManager;
 	},
 
 	getName : function(name){
@@ -195,14 +220,13 @@ _class= JClass.create( 'Player',
 		this.pcs.firePropertyChange('arg',null,this.argent);
 		this.pcs.firePropertyChange('atd',null,this.attitude);
 		this.pcs.firePropertyChange('pop',null,this.popularity);
-		/*this.equipement.each(function(pEquip,i)
-		{
-			this.pcs.firePropertyChange('addEquipment',{object:pEquip});
-		},this);*/
+		
+		this.backpack.fireInitialProperties();
 	},
 	
 	wound : function(damage){
 		this.setPointVie((this.pointVie - damage));
+		console.log(this.getJsClassName()+" perd "+damage+" points de vie");
 	}
 });
 

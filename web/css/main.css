@@ -29,6 +29,7 @@ div.gSep{
 
 label.gLabelFld{
 	float:left;
+	margin-right: 5px;
 }
 
 input.gFld,
@@ -311,6 +312,12 @@ position: absolute;
 position: absolute;
 }
 
+#gTopInteractionPanel{
+	clear:both;
+	float:none;
+	width:95%;
+}
+
 #gLeftInteractionPanel{
 	float:left;
 	width:45%;
@@ -332,6 +339,37 @@ position: absolute;
 	width:50px;
 }
 
+.gInteractionPanel{
+	border-top:2px dashed transparent;
+}
+
 .gInteractionPanelActive{
+	border-top:2px solid red;
+}
+
+.gPanelInteractionAction{
+	border: 1px solid black;
+	overflow: auto;
+}
+
+.gPanelInteractionAction label,
+.gPanelInteractionAction .gFld{
+	font-size: 11px;
+}
+
+.gPanelInteractionAction input.gFld, 
+.gPanelInteractionAction textarea.gFld {
+	width: 30px;
+}
+
+.gPanelInteractionAction select.gFld {
+	width: 120px;
+}
+
+.gPanelDead{
 	background : red;
+}
+
+.gFieldInteractionActionEquipmentQuality{
+	width: 80px !important;
 }

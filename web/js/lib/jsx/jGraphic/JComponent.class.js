@@ -179,11 +179,12 @@ _class= JClass.create( 'JComponent',
 			if(this.infoBulle){
 				this.jObject.attr('infobulle',this.infoBulle);
 			}
-			this.setJValue();
 			
 			if(typeof this.drawCustom=='function'){
 				this.drawCustom();
 			}
+			
+			this.setJValue();
 			
 			if(this.attr.size()>0){
 				this.attr.each(function(p){

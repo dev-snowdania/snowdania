@@ -3,12 +3,10 @@ JClass.import('jsx.jGraphic.JLabel');
 
 _class=JClass.create("InteractionPanel",jsx.JPanel,
 {
-	initialize:function($super,id,className,pWindow,pPlayer,pActions){
+	initialize:function($super,id,className,pWindow){
 		$super(id,className);
 		//this.controller=ctrl;
 		this.win = pWindow;
-		this.player = pPlayer;
-		this.actions = pActions;
 		
 		this.initPanel();
 	},
@@ -26,15 +24,6 @@ _class=JClass.create("InteractionPanel",jsx.JPanel,
 	desactivate: function(){
 		if(this.jObject){
 			this.jObject.removeClass("gInteractionPanelActive");
-		}
-	},
-	
-	propertyChange: function(evt){
-		switch(evt.getPropertyName())
-		{
-			case 'addEquipment':
-				;
-			break;
 		}
 	}
 });

@@ -2,29 +2,31 @@ JClass.import('jsx.entities.PropertyChangeSupport');
 
 _class= JClass.create( 'Interaction',
 {
-	initialize: function(){
+	initialize: function(pName,pDescription){
 		this.pcs = new jsx.PropertyChangeSupport(this);
 		this.logMsg='une interaction a lieu!';
+		this.name = pName;
+		this.description = pDescription;
 	},
 	
 	getPropertyChangeSupport:function(){
 		return this.pcs;
 	},
 	
-	setActionManager:function(pActManager){
-		this.actionManager = pActManager;
-	},
-	
-	interact: function(player){
+	interact: function(pInteractiveSession){
 		
-		if(this.actionManager){
-			var action = this.actionManager.get("DoNothing");
-			MVC.doAction('aoe.controller.InteractionController','executeAction',[action]);
-		}
+		;
 	},
 	
-	wound : function(damage){
-		console.log(this.getJsClassName()+" perd "+damage+" points de vie");
+	getName : function(){
+		return this.name;
+	},
+	
+	getDescription : function(){
+		return this.description;
 	}
 	
 });
+
+_class.STATUS_ALIVE = "INTERACTION_STATUS_ALIVE";
+_class.STATUS_DEAD = "INTERACTION_STATUS_DEAD";

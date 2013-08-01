@@ -13,6 +13,8 @@ Dice = {
 		var r =(Math.floor(Math.random() * 100)+1);
 		if(num==undefined) return {result: r};
 		var q,succeed;
+		
+		//magic numbers, 1 & 2 means always a success, whatever the number to reach
 		if(r == 1 || r == 2) {
 			succeed = true;
 			if(num<=0){
@@ -22,6 +24,7 @@ Dice = {
 			}
 		}
 		else{
+			//magic numbers, 99 & 100 means always a failure, whatever the number to reach
 			if(r==100 || r == 99) {
 				succeed = false;
 				if(num>=100){
@@ -33,6 +36,7 @@ Dice = {
 			else{
 				var diff=(num-r);
 				if(diff>=0) {
+					//success
 					succeed = true;
 					if(diff<20) {
 						q=Dice.NO_QUALITY;
@@ -46,6 +50,7 @@ Dice = {
 					}
 				}
 				else {
+					//failure
 					diff = Math.abs(diff);
 					succeed = false;
 					

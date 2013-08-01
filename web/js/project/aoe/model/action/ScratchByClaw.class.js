@@ -1,12 +1,20 @@
 JClass.import('aoe.model.action.Action');
 
-_class= JClass.create( 'ShotArrow', aoe.Action,
+_class= JClass.create( 'ScratchByClaw', aoe.Action,
 {
 	initialize: function($super){
 		
 		$super(this.getJsClassName());
-		this.skillClassName = 'Archery';
-		this.equipmentClassName = 'Bow';
+		this.skillClassName = 'Wrestling';
+		this.equipmentClassName = 'Claw';
+	},
+	
+	doable: function(pPlayer){
+		if(pPlayer.getJsClassName()=='LoupSolitaire'){
+			return true
+		}else{
+			return false;
+		}
 	},
 	
 	preExecute : function(){
@@ -15,45 +23,14 @@ _class= JClass.create( 'ShotArrow', aoe.Action,
 			return false;
 		}
 		
-		var delta = this.context.checkContextForPlayer(player,"SKILL",["DISTANT_THROW"]);
+		var l = this.skill.getLevel();
 		
-		var level = this.skill.getLevel() + delta;
-		
-		if(this.equipment){
-			var qa = this.equipment.getQualityLabel();
-			switch(qa){
-				case aoe.Equipment.QUALITY_WORTH:
-					level -= 15;
-					break;
-				case aoe.Equipment.QUALITY_VERY_BAD:
-					level -= 10;
-					break;
-				case aoe.Equipment.QUALITY_BAD:
-					level -= 5;
-					break;
-				case aoe.Equipment.QUALITY_GOOD:
-					level += 5;
-					break;
-				case aoe.Equipment.QUALITY_VERY_GOOD:
-					level += 10;
-					break;
-				case aoe.Equipment.QUALITY_BEST:
-					level += 15;
-					break;
-			}
-		}
-		
-		console.log("shot arrow level: "+level);
-		
-		return level;
+		return l;
 	},
 	
 	postExecute : function(pResult, pDiceThrow){
 		
-		
 		var damage = this.equipment.getStrength();
-		
-		this.equipment.useUnit(1);
 		
 		switch(pDiceThrow.quality){
 			case Dice.NO_QUALITY:
@@ -65,10 +42,6 @@ _class= JClass.create( 'ShotArrow', aoe.Action,
 			break;
 			case Dice.QUALITY_VERY_GOOD:
 				damage += 40;
-				this.opponent.wound(damage);
-				break;
-			case Dice.QUALITY_PERFECT:
-				damage += 50;
 				this.opponent.wound(damage);
 				break;
 			case Dice.QUALITY_BAD:

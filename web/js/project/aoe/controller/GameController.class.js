@@ -149,22 +149,21 @@ _class=JClass.create("GameController",{
 		}
 	},
 	
-	zoom : function(pInc)
-	{
+	zoom : function(pInc){
 		var mapPanel= this.ihmArea.getMapPanel();
 		mapPanel.zoom(pInc);
 	},
 	
-	switchEquipmentToHand : function(pObject)
-	{
-		this.currentPlayer.getBackpack().remove(pObject);
-		this.currentPlayer.getCurrentHand().add(pObject);
+	switchEquipmentToHand : function(pObject){
+		if(this.currentPlayer.getCurrentHand().addObject(pObject)){
+			this.currentPlayer.getBackpack().removeObject(pObject);
+		}
 	},
 	
-	switchHandToEquipment : function(pObject)
-	{
-		this.currentPlayer.getCurrentHand().remove(pObject);
-		this.currentPlayer.getBackpack().add(pObject);
+	switchHandToEquipment : function(pObject){
+		if(this.currentPlayer.getBackpack().addObject(pObject)){
+			this.currentPlayer.getCurrentHand().removeObject(pObject);
+		}
 	},
 	
 	propertyChange : function(evt){

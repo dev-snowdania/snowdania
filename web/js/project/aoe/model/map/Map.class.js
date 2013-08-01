@@ -305,12 +305,12 @@ _class= JClass.create( 'Map',
 				//$("#"+this.getGCaseId(x,y)).html("J");
 				
 				/*if(mcaseOld.getType()!=MCASE_FORET && mCase.getType()==MCASE_FORET)
-					this.updateGameStatus("Attention! les forêts peuvent abriter des bêtes dangereuses");
+					this.updateGameStatus("Attention! les forï¿½ts peuvent abriter des bï¿½tes dangereuses");
 				
 				this.posJx=x;
 				this.posJy=y;
 				
-				// objet trouvé
+				// objet trouvï¿½
 				var oObject = map.getObject(x,y);
 				if(oObject)
 				{
@@ -323,7 +323,7 @@ _class= JClass.create( 'Map',
 				player.setPosX(x);
 				player.setPosY(y);
 				
-				//révele les cases alantours
+				//rï¿½vele les cases alantours
 				this.revealCaseAround(player,x,y);
 			}
 			

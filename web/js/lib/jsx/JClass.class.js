@@ -2,8 +2,9 @@
 var JClass = {
 	jsxPath: "",
 	libPath: [],
-	loadedClasses: [],
+	loadedClasses: [], //index of class files already loaded 
 	_tmpCls:{},
+	index: {}, // index of classes already loaded
 		
 	create: function(cls,prt,obj) {
 		var o = this._tmpCls;
@@ -18,7 +19,7 @@ var JClass = {
 		if(obj!=undefined) o = Class.create(prt,obj);
 		else o = Class.create(prt);
 		
-		// on ajoute des proriétés et méthodes communes à tous les objets
+		// on ajoute des proriï¿½tï¿½s et mï¿½thodes communes ï¿½ tous les objets
 		if(o.prototype.clss==undefined)
 			o.prototype.clss=[];
 		o.prototype.clss.push(cls);
@@ -90,7 +91,7 @@ var JClass = {
 			_class=null;
 			this.include(file);
 			//alert(file);
-			if(_class=='undefined') throw("Error: JClass.import: l'importation de "+cls+" a échoué");
+			if(_class=='undefined') throw("Error: JClass.import: l'importation de "+cls+" a ï¿½chouï¿½");
 			else
 			{
 				if(_class instanceof Array)
@@ -113,7 +114,9 @@ var JClass = {
 				
 			}
 		}
-		else return null;//this.getClass(cls);
+		else {
+			return JClass.index[cls];//this.getClass(cls);
+		}
 	},
 	
 	_import : function(_class,cls,file)
@@ -125,12 +128,13 @@ var JClass = {
 			try
 			{
 				var c = this.copy(_class,cls);
+				JClass.index[cls] = c;
 			}
 			catch(e){throw "Error: JClass.import: "+e;}
 			this.loadedClasses.push(file);
 			return c;
 		}
-		else throw "Error: JClass.import: l'importation de "+cls+" a échoué";
+		else throw "Error: JClass.import: l'importation de "+cls+" a ï¿½chouï¿½";
 	},
 	
 	copy: function(src,dst) {
@@ -150,7 +154,7 @@ var JClass = {
 		}
 		catch(e) {throw "Error: JClass.copy: "+e;}
 		
-		// on crée la destination si inexistante
+		// on crï¿½e la destination si inexistante
 		try
 		{	
 			var clss = dst.split('.');
@@ -170,7 +174,7 @@ var JClass = {
 			oSrc.prototype.cls=dst;
 			return oSrc;
 		}
-		catch(e){throw "Error: JClass.copy : impossible de créer la destination "+dst;}
+		catch(e){throw "Error: JClass.copy : impossible de crï¿½er la destination "+dst;}
 	},
 	
 	remove: function(src) {
@@ -184,7 +188,7 @@ var JClass = {
 	},
 	
 	/*
-	 * A partir du nom d'une classe récupère l'objet class correspondant. ex: 'mon.chemin.de.classe'
+	 * A partir du nom d'une classe rï¿½cupï¿½re l'objet class correspondant. ex: 'mon.chemin.de.classe'
 	 * @param cls: String
 	 */ 
 	get: function(src) {
@@ -229,11 +233,11 @@ var JClass = {
 		{
 			return m.apply(c,param);
 		}
-		else throw "Error: JClass.callMethod: la méthode "+mthd+" n'existe pas pour la classe "+k;	
+		else throw "Error: JClass.callMethod: la mï¿½thode "+mthd+" n'existe pas pour la classe "+k;	
 	},
 	
 	/*
-	 * A partir du nom d'une classe récupère l'objet module corrspondant
+	 * A partir du nom d'une classe rï¿½cupï¿½re l'objet module corrspondant
 	 * @param cls: String
 	 */ 
 	getModule: function(src) {

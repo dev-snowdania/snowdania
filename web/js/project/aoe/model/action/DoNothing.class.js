@@ -1,6 +1,6 @@
 JClass.import('aoe.model.action.Action');
 
-_class= JClass.create( 'DoNothing', aoe.Action,
+_class= JClass.create( 'Target', aoe.Action,
 {
 	initialize: function($super){
 		

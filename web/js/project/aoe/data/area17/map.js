@@ -31,6 +31,7 @@ var dataMap={"map": {
 	  "objects": {	  
 		  	"mobject": [
 	   		  {"type": "aoe.model.equipment.Bow", "x": 5, "y" : 2},
+	   		  {"type": "aoe.model.equipment.Sword", "x": 5, "y" : 1},
 			  {"type": "aoe.model.equipment.MagicCarpet", "x": 10, "y" : 5}
 		    ]
 		  },

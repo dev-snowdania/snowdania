@@ -1,5 +1,5 @@
 JClass.import('aoe.model.map.ForestCase');
-JClass.import('aoe.data.area17.MeuteLoupsAffames');
+JClass.import('aoe.data.area17.LoupSolitaire');
 
 _class= JClass.create( 'ForetBoisManteaux', aoe.ForestCase,
 {
@@ -9,10 +9,10 @@ _class= JClass.create( 'ForetBoisManteaux', aoe.ForestCase,
 		this.logMessage= aoe.getLang('LogForetBoisManteaux');
 		
 
-		this.visibility = 20;
+		this.visibility = 50;
 		this.strength = 10;
 		
-		var inter1 = new aoe.MeuteLoupsAffames();
+		var inter1 = new aoe.LoupSolitaire();
 		this.interactions.push([50,inter1]);
 	}
 	

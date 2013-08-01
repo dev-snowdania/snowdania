@@ -1,62 +1,66 @@
 JClass.import('aoe.view.InteractionPanel');
+JClass.import('aoe.view.InteractionActionPanel');
 
-//JClass.import('jsx.Graphic.JInteractionButton');
-
+JClass.import('jsx.observable.ObservableList');
 _class=JClass.create("LeftInteractionPanel",aoe.InteractionPanel,
 {
-	initialize:function($super,pWindow,pPlayer,pActions){
-		$super("gLeftInteractionPanel","gPanel",pWindow,pPlayer,pActions);
+	initialize:function($super,pWindow,pPlayer){
+		$super("gLeftInteractionPanel","gPanel gInteractionPanel",pWindow,pPlayer);
+		
+		this.player = pPlayer;
+		this.actions = this.player.getActionManager(true);
 		
 		this.gLabel=new jsx.JLabel(this.player.getName(),null,"gLabelInteractionPlayer");
 		
-		this.interactiveButtons = [];
+		this.actionPanelManager = new jsx.ObservableList();
 		
 		this.actions.reset();
-		var act;
+		var act,pane;
 		while(act = this.actions.next()){
-			
-			var equipment = act.getContext().get('equipment');
-			if(equipment){
-				var label = act.getLabel()+" ("+equipment.getUnit()+")";
-				var btn= new jsx.JButton(label,"g"+act.getJsClassName());
-			}else{
-				var label = act.getLabel();
-				var btn= new jsx.JButton(label,"g"+act.getJsClassName());
-			}
-			
-			btn.addEventListener("click",function(e,action){
-				MVC.doAction('aoe.controller.InteractionController','executeAction',[action]);
-			},act);
-			
-			//this.addComponent(btn);
-			this.interactiveButtons.push(btn);
+			pane = new aoe.InteractionActionPanel(act);
+			this.actionPanelManager.add(pane,act.getJsClassName());
 		}
+	},
+	
+	getActionPanelManager: function(reset){
+		if(reset){
+			this.actionPanelManager.reset();
+		}
+		return this.actionPanelManager;
 	},
 	
 	activate: function($super){
 		$super();
 		
-		this.interactiveButtons.each(function(pBtn,i){
+		this.actionPanelManager.reset();
+		var pane;
+		while((pane=this.actionPanelManager.next())){
+			//btn.setReadOnly(false);
+		}
+		/*this.interactiveButtonsManager.each(function(pBtn,i){
 			pBtn.setReadOnly(false);
-		},this);
+		},this);*/
 	},
 	
 	desactivate: function($super){
 		$super();
 		
-		this.interactiveButtons.each(function(pBtn,i){
-			pBtn.setReadOnly(true);
-		},this);
+		this.actionPanelManager.reset();
+		var pane;
+		while((pane=this.actionPanelManager.next())){
+			//btn.setReadOnly(true);
+		}
 	},
 	
 	draw : function($super){
 		
 		this.addComponent(this.gLabel);
 		
-		this.interactiveButtons.each(function(pBtn,i){
-			this.addComponent(pBtn);
-		},this);
-		
+		this.actionPanelManager.reset();
+		var pane;
+		while((pane=this.actionPanelManager.next())){
+			this.addComponent(pane);
+		}
 			
 		$super();
 	}

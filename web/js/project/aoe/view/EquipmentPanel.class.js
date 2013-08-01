@@ -47,18 +47,18 @@ _class= JClass.create( 'EquipmentPanel', jsx.JDropPanel,
 		this.model.each(function(pObject){
 			//this.numObjects++;
 			var gBtn = new jsx.JButton(pObject.getShortcut());
-			gBtn.setInfoBulle(pObject.getLabel()+" ("+pObject.getUnit()+")");
+			//gBtn.setInfoBulle(pObject.getLabel()+" ("+pObject.getUnit()+")");
 			gBtn.propertyChange = function(evt){
 				switch(evt.getPropertyName()){
 					case 'unit':
 						var mObject=evt.getSource();
-						this.setInfoBulle(mObject.getLabel()+" ("+evt.getNewValue()+")");
+						//this.setInfoBulle(mObject.getLabel()+" ("+evt.getNewValue()+")");
 					break;
 				}
 			};
 			gBtn.addEventListener("click",function(e,ctx){
 				ctx.selectedOid=this.getOid();
-				// TODO: à revoir
+				// TODO: ï¿½ revoir
 				if(ctx.id=='gEquipmentPanel'){
 					ctx.controller.switchEquipmentToHand(ctx.getSelectedObject());
 				} else{

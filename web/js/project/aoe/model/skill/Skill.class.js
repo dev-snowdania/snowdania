@@ -2,12 +2,22 @@ JClass.import('jsx.entities.PropertyChangeSupport');
 
 _class= JClass.create( 'Skill',
 {
-	initialize: function(level){
-		this.code = null;
-		this.label = null;
-		this.description = null;
-		this.level = level;
-		this.logMessage = 'vous avez développé une nouvelle compétence';
+	initialize: function(pLevel,pLogJsClassName,pMaxLevel){
+		
+		this.level = pLevel;
+		
+		if(pMaxLevel){
+			this.maxLevel = pMaxLevel;
+		}else{
+			this.maxLevel = pLevel;
+		}
+		
+		if(pLogJsClassName){
+			this.label = aoe.getLang('Sk'+pLogJsClassName+'Label');
+			this.description = aoe.getLang('Sk'+pLogJsClassName+'Desc');
+			this.logMessage = aoe.getLang('Sk'+pLogJsClassName+'Log');
+		}
+		
 		this.pcs = new jsx.PropertyChangeSupport(this);
 	},
 	
@@ -35,8 +45,8 @@ _class= JClass.create( 'Skill',
 		return this.description;
 	},
 	
-	setLevel : function(v){
-		this.level = v;
+	setLevel : function(pLevel){
+		this.level = pLevel;
 	},
 	
 	getLevel : function(){
@@ -47,7 +57,19 @@ _class= JClass.create( 'Skill',
 		return this.logMessage;
 	},
 	
-	getCode: function(){
-		return this.code;
-	}
+	getMaxLevel:function(){
+		return this.maxLevel;
+	},
+	
+	getRatioLevel:function(){
+		return (this.level/this.maxLevel);
+	},
+	
+	removeLevel:function(pLevel,pUnit){
+		if(pUnit && pUnit=='%'){
+			this.setLevel(this.level - Math.ceil((this.level*pLevel)/100)); 
+		}else{
+			this.setLevel(this.level - pLevel);
+		}
+	},
 });
