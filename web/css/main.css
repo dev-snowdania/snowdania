@@ -5,7 +5,7 @@
 @CHARSET "ISO-8859-1";
 
 body{
-	background:#eee;
+	background:#321F0E;
 	margin:0;
 	padding:0;
 	font-family: verdana, arial;
@@ -44,6 +44,7 @@ textarea.gReadOnlyFld,
 select.gReadOnlyFld{
 	background: none;
 	border:0;
+	color: #FFF;
 }
 
 /**
@@ -55,7 +56,7 @@ select.gReadOnlyFld{
 	top:0;left:0;
 	width:100%;
 	height:590px;
-	background:#000;
+	/*background: url(../img/bg_game.jpg) no-repeat;*/
 }
 
 #gInfo{
@@ -81,7 +82,19 @@ select.gReadOnlyFld{
 	padding:0;
 	margin:0;
 	overflow:auto;
-	background:black;
+	background: black url(../img/bg_map.png) no-repeat;
+	border: 4px solid #3C2714;
+}
+
+#gMap .current-player{
+	background: red!important;
+	opacity: 1!important;
+}
+
+#gMap .tbl{
+	opacity: 0.4;
+	margin-top: 38px;
+	margin-left: 35px;
 }
 
 #gMap .tbl-row{
@@ -90,9 +103,9 @@ select.gReadOnlyFld{
 
 #gMap .tbl-row div{
 	float: left;
-	width:20px;
-	height:20px;
+	font-size:0.8em;
 	border: 1px solid transparent;
+	opacity: 0;
 }
 
 #gMap.grid .tbl-row div{
@@ -111,7 +124,7 @@ select.gReadOnlyFld{
 
 #gPlayer{
 	float:left;
-	background:#eee;
+	/*background:#eee;*/
 	width:200px;
 	height:100%;
 	padding:0;
@@ -156,10 +169,12 @@ select.gReadOnlyFld{
 }
 
 .gDropPanelHeader{
-	clear:both;
+	clear: both;
 	width: 100%;
-	height:25px;
-	background-color:gray; 
+	height: 25px;
+	background: #180E04;
+	color: #FFF;
+	border-radius: 5px;
 }
 .gDropPanelHeaderTitle{
 	width: 79%;
@@ -175,10 +190,11 @@ select.gReadOnlyFld{
 .gDropPanelContent{
 	clear:both;
 	width: 100%;
-	height:55px;
+	min-height:55px;
 	background-color:white;
-	overflow:auto; 
+	overflow:hidden; 
 	display:none;
+	height:auto;
 }
 
 .gDropPanelContent TABLE{
@@ -213,23 +229,36 @@ select.gReadOnlyFld{
 }
 
 .bg_pl{
-	background: URL("../img/bg_pl.jpg");
-	/*background-color:#CEA177;*/
+	background: URL("../img/_bg_pl.jpg");
+	background-color:#B7875F;
 }
 
 .bg_mt{
-	background:URL("../img/bg_mo.jpg");
-	/*background-color:#D4C3D3;*/
+	background:URL("../img/_bg_mo.jpg");
+	background-color:#87766F;
+}
+
+.bg_hg_mt{
+	background:URL("../img/_bg_hg_mo.jpg");
+	background-color:#FFFFFF;
 }
 
 .bg_ri{
-	background:URL("../img/bg_ri.jpg");
-	/*background-color:#8198AA;*/
+	background:URL("../img/_bg_ri.jpg");
+	background-color:#7E95A7;
+}
+
+.bg_dp_wa{
+	background-color:#0F2DA7;
 }
 
 .bg_fo{
-	background:URL("../img/bg_fo.jpg");
-	/*background-color:#5D6E06;*/
+	background:URL("../img/_bg_fo.jpg");
+	background-color:#4F630C;
+}
+
+.bg_hi{
+	background-color:#CDF34D;
 }
 
 .bg_ep{
@@ -264,12 +293,76 @@ select.gReadOnlyFld{
 
 #gResumePortraitPanel{
 	float:left;
-	background:#eee;
+	/*background:#eee;*/
 	width:90px;
 	height:100px;
 	padding:0;
 	margin:0;
 	margin-left: 10px;
+}
+
+#gPlayer .tbl-cell{
+	width: 34px;
+	height: 30px;
+}
+
+#gTableNavigation{
+	margin-top: 10px;
+	margin-bottom: 10px;
+	clear: both;
+	float: none;
+	padding-top: 10px;
+}
+
+BUTTON.btnDirection{
+	border: 0px;
+	width: 35px!important;
+	height: 30px!important;
+	background: #E1DFDC;
+}
+
+#btnDirectionN{
+	border-top:1px solid black;
+	border-bottom:1px solid black;
+}
+
+#btnDirectionS{
+	border-top:1px solid black;
+	border-bottom:1px solid black;
+}
+
+#btnDirectionE{
+	border-left:1px solid black;
+	border-right:1px solid black;
+}
+
+#btnDirectionW{
+	border-left:1px solid black;
+	border-right:1px solid black;
+}
+
+#btnDirectionNW{
+	border-left:1px solid black;
+	border-top:1px solid black;
+	border-radius: 5px 0px 0px 0px;
+}
+
+#btnDirectionSW{
+	border-left:1px solid black;
+	border-bottom:1px solid black;
+	border-radius: 0px 0px 0px 5px;
+}
+
+#btnDirectionSE{
+	border-right:1px solid black;
+	border-bottom:1px solid black;
+	border-radius: 0px 0px 5px 0px;
+}
+
+#btnDirectionNE{
+	border-right:1px solid black;
+	border-top:1px solid black;
+	border-radius: 0px 5px 0px 0px;
 }
 
 /* Popup */
@@ -348,10 +441,13 @@ position: absolute;
 }
 
 .gPanelInteractionAction{
-	border: 1px solid black;
+	/*border-bottom: 1px solid black;*/
 	overflow: hidden;
-	height: 100%;
-	margin-top: 3px;
+	/*margin-top: 5px;*/
+}
+
+.gPanelInteractionActionEquipment{
+	clear: both;
 }
 
 .gPanelInteractionAction label,

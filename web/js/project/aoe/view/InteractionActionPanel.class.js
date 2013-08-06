@@ -1,7 +1,9 @@
-JClass.import('jsx.jGraphic.JPanel');
+JClass.import('jsx.jGraphic.JDropPanel');
 //JClass.import('jsx.jGraphic.JLabel');
 
-_class=JClass.create("InteractionActionPanel",jsx.JPanel,
+JClass.import('aoe.view.ActionEquipmentPanel');
+
+_class=JClass.create("InteractionActionPanel",jsx.JDropPanel,
 {
 	initialize:function($super,action){
 		$super("gPanel"+action.getJsClassName(),"gPanel gPanelInteractionAction");
@@ -10,7 +12,17 @@ _class=JClass.create("InteractionActionPanel",jsx.JPanel,
 		this.equipment = this.action.getEquipment();
 		this.skill = this.action.getSkill();
 		
+		this.equipmentPanelManager = {};
+		
 		this.initPanel();
+	},
+	
+	getAction: function(){
+		return this.action;
+	},
+	
+	getEquipment : function(){
+		return this.equipment;
 	},
 	
 	initPanel: function(){
@@ -82,105 +94,109 @@ _class=JClass.create("InteractionActionPanel",jsx.JPanel,
 			this.skillChooserField.setValue(val);
 		}
 		
-		if(this.action.getEquipmentJsClassName()){
+		if(this.action.getEquipmentJsClassName().length>0){
 			this.equipmentChooserField = new jsx.JSelectField(null,{},"gFieldInteractionActionEquipmentChooser"+this.action.getJsClassName(),"gFld gSelectFld gFieldInteractionActionEquipmentChooser");
 			this.equipmentChooserField.addOption("","-- none --");
 			
 			this.equipmentChooserField.addEventListener("change",function(e,action){
 				
-				var p = this.jObject.parents(".gPanelInteractionAction");
+				
+				
+				var prt = this.jObject.parents(".gPanelInteractionAction");
 				
 				var skill,equipment;
 				
-				var skillChooser = p.find(".gFieldInteractionActionSkillChooser");
+				var skillChooser = prt.find(".gFieldInteractionActionSkillChooser");
 				if(skillChooser.length){
 					skill = skillChooser.val();
 				}
 				
 				equipment = this.jObject.val();
 				
+				prt.find(".gPanelInteractionActionEquipment").hide();
+				prt.find("#gPanel"+action.getJsClassName()+equipment).show();
+				
 				MVC.doAction('aoe.controller.InteractionController','checkAction',[action,skill,equipment]);
 			},this.action);
 			
-			var equipmentManager = this.action.getContext().getPlayer().getCurrentHand(true);
-			var eq, val = null;
-			while(eq=equipmentManager.next()){
-				if(eq.getJsClassName() == this.action.getEquipmentJsClassName()){
-					val = eq.getOid();
-					this.equipmentChooserField.addOption(eq.getOid(),eq.getLabel()+" (D:"+eq.getStrength()+")");
+			this.action.getContext().getPlayer().getCurrentHand().reset().each(function(pEquipment,pList,pContext){
+				if(pContext.action.getEquipmentJsClassName().intersect([pEquipment.getJsClassName()]).length>0){
+					val = pEquipment.getOid();
+					pContext.equipmentChooserField.addOption(pEquipment.getOid(),pEquipment.getLabel());
+					
+					pContext.addEquipmentPanel(pEquipment,false);
 				}
-			}
+			},this);
 			
-			console.log("eq: "+val);
-			this.equipmentChooserField.setValue(val);
-			
-			if(this.equipment){
-				
-				this.equipmentLabel = new jsx.JLabel(this.equipment.getLabel(),null,"gLabelInteractionActionEquipment"+this.action.getJsClassName(),"gLabel gLabelFld");
-				
-				this.equipmentDamageField = new jsx.JTextField(this.equipment.getStrength(),"gFieldInteractionActionEquipmentDamage"+this.action.getJsClassName(),"gFld gTxtFld gFieldInteractionActionEquipmentDamage gReadOnlyFld");
-				this.equipmentDamageLabel = new jsx.JLabel("D",this.equipmentDamageField,"gLabelInteractionActionEquipmentDamage"+this.action.getJsClassName(),"gLabel gLabelFld");
-				
-				this.equipmentDamageMaxField = new jsx.JTextField(this.equipment.getStrengthAttribute().getMax(),"gFieldInteractionActionEquipmentDamageMax"+this.action.getJsClassName(),"gFld gTxtFld gFieldInteractionActionEquipmentDamage gReadOnlyFld");
-				this.equipmentDamageMaxLabel = new jsx.JLabel("/",this.equipmentDamageMaxField,"gLabelInteractionActionEquipmentDamageMax"+this.action.getJsClassName(),"gLabel gLabelFld");
-				
-				this.equipmentQualityField = new jsx.JTextField(this.equipment.getQuality()+" ("+aoe.getLang(this.equipment.getQualityLabel())+")","gFieldInteractionActionEquipmentQuality"+this.action.getJsClassName(),"gFld gTxtFld gFieldInteractionActionEquipmentQuality gReadOnlyFld");
-				this.equipmentQualityLabel = new jsx.JLabel("Q",this.equipmentQualityField,"gLabelInteractionActionEquipmentQuality"+this.action.getJsClassName(),"gLabel gLabelFld");
-				
-				var range = this.equipment.getRange();
-				this.equipmentRangeField = new jsx.JTextField(range[0]+"-"+range[1],"gFieldInteractionActionEquipmentRange"+this.action.getJsClassName(),"gFld gTxtFld gFieldInteractionActionEquipmentRange gReadOnlyFld");
-				this.equipmentRangeLabel = new jsx.JLabel("P",this.equipmentRangeField,"gLabelInteractionActionEquipmentRange"+this.action.getJsClassName(),"gLabel gLabelFld");
-				
-				if(this.equipment instanceof aoe.RangeWeapon){
-					this.equipmentUnitField = new jsx.JTextField(this.equipment.getUnit(),"gFieldInteractionActionEquipmentUnit"+this.action.getJsClassName(),"gFld gTxtFld gFieldInteractionActionEquipmentUnit gReadOnlyFld");
-					this.equipmentUnitLabel = new jsx.JLabel("U",this.equipmentUnitField,"gLabelInteractionActionEquipmentUnit"+this.action.getJsClassName(),"gLabel gLabelFld");
-				}
-				
-			}
+			//this.equipmentChooserField.setValue(val);
 		}
 		
 	},
 	
+	addEquipmentPanel: function(pEquipment,pDraw){
+		
+		if(typeof pDraw == 'undefined'){
+			pDraw = true;
+		}
+		
+		var eqpPanel = new aoe.ActionEquipmentPanel(pEquipment,this.action);
+		eqpPanel.setParent(this.gContentPanel);
+		
+		this.equipmentPanelManager[pEquipment.getJsClassName()+pEquipment.getOid()] = eqpPanel;
+		
+		pEquipment.getPropertyChangeSupport().addListener(eqpPanel);
+		
+		if(pDraw){
+			eqpPanel.draw();
+		}
+	},
+	
+	removeEquipmentPanel: function(pEquipment){
+		
+		var panel = this.equipmentPanelManager[pEquipment.getJsClassName()+pEquipment.getOid()];
+		
+		panel.eraser();
+		
+		delete this.equipmentPanelManager[pEquipment.getJsClassName()+pEquipment.getOid()];
+	},
+	
 	draw: function($super){
-		this.addComponent(this.button);
+		//this.addComponent(this.button);
+		this.gHeaderTitlePanel.addComponent(this.button);
+		
+		if(this.action.getEquipmentJsClassName().length>0){
+			//this.addComponent(this.equipmentChooserField);
+			this.gContentPanel.addComponent(this.equipmentChooserField);
+		}
 		
 		if(this.action.getSkillJsClassName()){
-			this.addComponent(this.skillChooserField);
+			//this.addComponent(this.skillChooserField);
+			this.gContentPanel.addComponent(this.skillChooserField);
 		}
 		
-		if(this.action.getEquipmentJsClassName()){
-			this.addComponent(this.equipmentChooserField);
-		}
-		
-		this.addComponent(this.sep4);
+		//this.addComponent(this.sep4);
+		this.gContentPanel.addComponent(this.sep4);
 		
 		if(this.skill){
-			this.addComponent(this.sep1);
-			this.addComponent(this.skillLabel);
-			this.addComponent(this.skillField);
-		}
-		
-		if(this.equipment){
-			this.addComponent(this.sep2);
-			this.addComponent(this.equipmentLabel);
-			this.addComponent(this.sep3);
-			this.addComponent(this.equipmentDamageLabel);
-			this.addComponent(this.equipmentDamageField);
-			this.addComponent(this.equipmentDamageMaxLabel);
-			this.addComponent(this.equipmentDamageMaxField);
-			this.addComponent(this.equipmentQualityLabel);
-			this.addComponent(this.equipmentQualityField);
-			this.addComponent(this.equipmentRangeLabel);
-			this.addComponent(this.equipmentRangeField);
-			
-			if(this.equipment instanceof aoe.RangeWeapon){
-				this.addComponent(this.equipmentUnitLabel);
-				this.addComponent(this.equipmentUnitField);
-			}
-			
+			this.gContentPanel.addComponent(this.sep1);
+			this.gContentPanel.addComponent(this.skillLabel);
+			this.gContentPanel.addComponent(this.skillField);
 		}
 		
 		$super();
+		
+		var val,pane = null;
+		for(panelKey in this.equipmentPanelManager){
+			panel = this.equipmentPanelManager[panelKey];
+			panel.draw();
+			//val= panel.getEquipment().getOid();
+			//this.addEquipmentPanel(panel.getEquipment());
+		}
+		//console.log(this.action.getEquipment());
+		if(this.action.getEquipment()){
+			this.equipmentChooserField.setValue(this.action.getEquipment().getOid());
+			this.equipmentChooserField.getJQuery().trigger("change");
+		}
 	},
 	
 	getActionButton: function(){
@@ -191,19 +207,31 @@ _class=JClass.create("InteractionActionPanel",jsx.JPanel,
 		return this.skillField;
 	},
 	
-	getEquipmentDamageField: function(){
-		return this.equipmentDamageField;
+	getSkillChooserField: function(){
+		return this.skillChooserField;
 	},
 	
-	getEquipmenRangeField: function(){
-		return this.equipmentRangeField;
+	getEquipmentChooserField: function(){
+		return this.equipmentChooserField;
 	},
 	
-	getEquipmentUnitField: function(){
-		return this.equipmentUnitField;
+	propertyChange: function(evt){
+		
+		var action = evt.getSource();
+		
+		if(!action.getPlayer() || action.getPlayer().getJsClassName() == "Player"){
+			switch(evt.getPropertyName()){
+				case 'status':
+					if(evt.getNewValue()==aoe.Action.STATUS_ACTIVE){
+						this.gHeaderPanel.getJQuery().effect("highlight", {color:"orange"}, 3000);
+						this.getActionButton().setReadOnly(false);
+					}else{
+						this.getActionButton().setReadOnly(true);
+					}
+				break;
+				
+			}
+		}
+		
 	},
-	
-	getEquipmentQualityField: function(){
-		return this.equipmentQualityField;
-	}
 });

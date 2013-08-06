@@ -11,19 +11,13 @@ _class= JClass.create( 'MountainCase', aoe.MapCase,
 			this.className = 'tbl-cell, bg_mt';
 		}
 		this.logMsgMoveErr=aoe.getLang('CaseMtnLogErr');
+		
+		this.coeffTiredness = 3;
 	},
 	
 	tryMove : function($super,player)
 	{
-		var l=player.getBackpack().getByJsClassName('ClimbingEquipment');
-		if(l.length>0) 
-		{
-			var mObject=l[0];
-			mObject.useUnit();
-			if(mObject.getUnit()<=0) return false;
-			return true;
-		}
-		else return false;
+		return $super(player);
 	}
 	
 });

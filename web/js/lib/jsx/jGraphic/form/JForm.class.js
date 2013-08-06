@@ -9,7 +9,7 @@ _class= JClass.create( 'JForm', jsx.jGraphic.JComponent,
 	}
 });
 
-GField.prototype = new GComponent; 
+/*GField.prototype = new GComponent; 
 function GField(id,className)
 {
 	
@@ -40,4 +40,4 @@ function GLabel(val,gField,id,className)
 	this.tmpl="<label></label>";
 	this.value=val;
 	this.gField=gField;
-}
+}*/

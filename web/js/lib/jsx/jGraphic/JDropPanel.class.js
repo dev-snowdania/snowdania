@@ -5,6 +5,11 @@ _class= JClass.create( 'JDropPanel', jsx.JPanel,
 {
 	initialize: function($super,id,className)
 	{
+		if(typeof className == "undefined"){
+			className = "gDropPanel";
+		}else{
+			className += " gDropPanel";
+		}
 		$super(id,className);
 		this.gHeaderPanel = new jsx.JPanel(null,"gDropPanelHeader");
 		this.gHeaderTitlePanel=new jsx.JPanel(null,"gDropPanelHeaderTitle");
@@ -15,18 +20,17 @@ _class= JClass.create( 'JDropPanel', jsx.JPanel,
 			labels:['down','up'],
 			funcs:[function () {
 				  jQuery(this).text("up");
-				  jQuery(this).parent().parent().parent().children().eq(1).slideDown("slow");
+				  jQuery(this).parents(".gDropPanel").find(".gDropPanelContent").slideDown("slow");
 				},
 			      function () {
 			    	  jQuery(this).text("down");
-			    	 jQuery(this).parent().parent().parent().children().eq(1).slideUp("slow");
+			    	 jQuery(this).parents(".gDropPanel").find(".gDropPanelContent").slideUp("slow");
 			      }]
 		};
 			    
 		this.gHeaderBtnPanel=new jsx.JPanel(null,"gDropPanelHeaderBtn");
 		this.gContentPanel = new jsx.JPanel(null,"gDropPanelContent");
 		
-		this.title="&nbsp;";
 	},
 	
 	getToggle : function()
@@ -76,7 +80,15 @@ _class= JClass.create( 'JDropPanel', jsx.JPanel,
 	
 	draw : function($super)
 	{
-		this.gHeaderTitlePanel.setValue(this.title);
+		if(typeof this.title == "undefined"){
+			if(this.gHeaderTitlePanel.subComponents.length == 0){
+				this.title = "&nbsp;"
+			}
+		}
+		
+		if(typeof this.title != "undefined"){
+			this.gHeaderTitlePanel.setValue(this.title);
+		}
 		
 		var behavior=[];
 		for(var i=0;i<this.toggle.states.length;i++)
@@ -84,8 +96,25 @@ _class= JClass.create( 'JDropPanel', jsx.JPanel,
 			var ind=this.toggle.states[i];
 			behavior[i]=this.toggle.funcs[ind];
 		}
-		this.gDropButton.setLabel(this.toggle.labels[this.toggle.states[0]]);
-		this.gDropButton.setToggleBehavior(behavior);
+		this.gDropButton.setLabel(">>");
+		this.gDropButton.addEventListener("click",function(e,action){
+			
+			this.jObject.parents(".gDropPanel").find(".gDropPanelContent").toggle(200);
+			
+			/*var p = jQuery("#"+this.id).parents(".gPanelInteractionAction");
+			
+			var skill,equipment;
+			
+			skill = this.jObject.val();
+			
+			var equipmentChooser = p.find(".gFieldInteractionActionEquipmentChooser");
+			if(equipmentChooser.length){
+				equipment = equipmentChooser.val();
+			}
+			
+			MVC.doAction('aoe.controller.InteractionController','checkAction',[action,skill,equipment]);*/
+		},this);
+		//this.gDropButton.setToggleBehavior(behavior);
 		
 		this.gHeaderBtnPanel.addComponent(this.gDropButton);
 		

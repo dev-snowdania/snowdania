@@ -112,6 +112,9 @@ _class= JClass.create( 'JComponent',
 	
 	setCss:function(name,val){
 		this.css.set(name,val);
+		if(this.jObject){
+			this.jObject.css(name,val);
+		}
 	},
 	
 	bindEvent:function(evtName,func){

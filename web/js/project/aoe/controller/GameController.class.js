@@ -17,7 +17,7 @@ _class=JClass.create("GameController",{
 		
 		this.currentPlayer=new aoe.Player();
 		this.currentPlayer.setName("darky");
-		this.currentPlayer.setImage("web/js/project/aoe/data/player/portrait_elfe.jpg");
+		this.currentPlayer.setImage("web/js/project/aoe/data/player/portrait.png",{"background-position": "-106px -24px"});
 		this.currentPlayer.setLang('fr');
 		this.currentPlayer.setPosX(0);
 		this.currentPlayer.setPosY(0);
@@ -54,6 +54,10 @@ _class=JClass.create("GameController",{
 			this.map.load(this.currentPlayer.getLang());
 		}
 		catch(e){throw e;}
+		
+		//console.log(this.map.playerPosX+" "+this.map.playerPosY);
+		
+		this.movePlayerTo(this.map.playerPosX,this.map.playerPosY);
 		
 		//this.zoom(-40);
 	},
@@ -110,13 +114,25 @@ _class=JClass.create("GameController",{
 		this.movePlayer(1,1);
 	},
 	
-	movePlayer : function(x,y)
-	{
+	movePlayerTo : function(x,y){
+		var pX = this.currentPlayer.getPosX();
+		var pY = this.currentPlayer.getPosY();
+		
+		this._movePlayer(pX,pY,x,y,"");
+	},
+	
+	movePlayer : function(x,y){
 		var pX = this.currentPlayer.getPosX();
 		var pY = this.currentPlayer.getPosY();
 		var nX= (pX+x);
 		var nY= (pY+y);
+		
 		var nCoords = ''+x+','+y;
+		
+		this._movePlayer(pX,pY,nX,nY,nCoords);
+	},
+	
+	_movePlayer : function(pX,pY,nX,nY,nCoords){
 		
 		if(!this.map.movePlayer(this.currentPlayer,nX,nY)){
 		
@@ -157,12 +173,14 @@ _class=JClass.create("GameController",{
 	switchEquipmentToHand : function(pObject){
 		if(this.currentPlayer.getCurrentHand().addObject(pObject)){
 			this.currentPlayer.getBackpack().removeObject(pObject);
+			this.currentPlayer.checkAttitude();
 		}
 	},
 	
 	switchHandToEquipment : function(pObject){
 		if(this.currentPlayer.getBackpack().addObject(pObject)){
 			this.currentPlayer.getCurrentHand().removeObject(pObject);
+			this.currentPlayer.checkAttitude();
 		}
 	},
 	

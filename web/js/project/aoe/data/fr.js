@@ -15,6 +15,10 @@ var dataLang={
 	EqSwordLabel:"Epée courte",
 	EqSwordDesc:"l'épée courte est une arme relativement puissante et maniable. Elle vous permet d'attaquer vos adversaires au contact",
 	EqSwordLog:"félicitation vous avez trouvé une épée courte! vous pouvez maintenant attaquez vos ennemis au contact",
+	EqDaggerShort:"DG",
+	EqDaggerLabel:"Dague",
+	EqDaggerDesc:"la dague est une arme à double tranchant efficace sur les coups d'estoc",
+	EqDaggerLog:"félicitation vous avez trouvé une dague! vous pouvez maintenant attaquez vos ennemis au contact",
 	EqBowShort:"BW",
 	EqBowLabel:"Arc Court",
 	EqBowDesc:"l'arc permet d'attaquer à long portée",
@@ -49,6 +53,30 @@ var dataLang={
 	                qa_v_bad: "Echec complet! hors d'haleine, vous avez du mal a récupérer votre souffle",
 	                qa_worth: "Catastrophe! votre pied trébuche sur une pierre et vous tord la cheville."
 	                },
+    ActGetOutLabel:"Se dégager",
+    ActGetOutDesc:"Le dégagement permet de repouser un adversaire ou un objet situé au corps à corps.",
+    ActGetOutLog: {
+    				execute: "%s se dégage",
+    				qa_perfect:"Coup magistral! dégagement",
+    				qa_v_good: "Réussite parfaite! dégagement",
+	                qa_good: "Réussite! dégagement",
+	                qa_no_qa: "dégagement",
+	                qa_bad: "Echec partiel! dégagement",
+	                qa_v_bad: "Echec complet! dégagement",
+	                qa_worth: "Catastrophe! dégagement."
+	                },
+    ActCatchLabel:"Attrapper",
+    ActCatchDesc:"Attrapper permet de rentrer en contact avec un objet ou un être vivant au corps à corps.",
+    ActCatchLog: {
+    				execute: "%s attrappe",
+    				qa_perfect:"Coup magistral! attrappe",
+    				qa_v_good: "Réussite parfaite! attrappe",
+	                qa_good: "Réussite! attrappe",
+	                qa_no_qa: "attrappe",
+	                qa_bad: "Echec partiel! attrappe",
+	                qa_v_bad: "Echec complet! attrappe",
+	                qa_worth: "Catastrophe! attrappe."
+	                },
     ActMoveForwardLabel:"Avançer",
     ActMoveForwardDesc:"Se rapprocher de son adversaire permet d'utiliser des actions de contact.",
     ActMoveForwardLog: {
@@ -59,7 +87,7 @@ var dataLang={
 	                qa_no_qa: "se rapprocher",
 	                qa_bad: "Echec partiel! se rapprocher",
 	                qa_v_bad: "Echec complet! se rapprocher",
-	                qa_worth: "Catastrophe! se rapprocher."
+	                qa_worth: "Catastrophe! un obstacle empêche %s d'avancer correctement."
 	                },
 	ActTargetLabel: "Viser",
 	ActTargetDesc: "Viser permet d'augmenter les chances d'atteindre une cible à distance.",
@@ -90,12 +118,36 @@ var dataLang={
     ActHitWithEdgeLog: {
     				execute: "%s porte un coup de taille",
     				qa_perfect:"Coup magistral! le coup coupe littérallement la main de %s",
-    				qa_v_good: "Réussite parfaite! le coup s'enfonce dans la cuisse de %s jusqu'au rebord de la lame",
+    				qa_v_good: "Réussite parfaite! le coup tranche la cuisse de %s jusqu'au rebord de la lame",
 	                qa_good: "Réussite! le coup incise les côtes de %s",
 	                qa_no_qa: "le coup incise %s, rien de plus qu'une petite coupure",
-	                qa_bad: "Echec partiel! le coup pass au raz de %s",
+	                qa_bad: "Echec partiel! le coup passe au raz de %s",
 	                qa_v_bad: "Echec complet! la lame heurte un arbre.",
 	                qa_worth: "Catastrophe! Le pommeau de l'arme se dévisse et %s se luxe l'épaule"
+	                },
+    ActHitWithTipLabel:"Porter un coup d'estoc",
+    ActHitWithTipDesc:"Un coup d'estoc s'effectue avec une arme pointue, type une épée ou toute arme ayant une lame pointue",
+    ActHitWithTipLog: {
+    				execute: "%s porte un coup d'estoc",
+    				qa_perfect:"Coup magistral! le coup transperse littérallement la main de %s",
+    				qa_v_good: "Réussite parfaite! le coup s'enfonce dans la cuisse de %s jusqu'au rebord de la lame",
+	                qa_good: "Réussite! le coup perfore les côtes de %s",
+	                qa_no_qa: "le coup plonge dans %s, rien de plus qu'une petite perforation",
+	                qa_bad: "Echec partiel! le coup passe au raz de %s",
+	                qa_v_bad: "Echec complet! la lame heurte un arbre.",
+	                qa_worth: "Catastrophe! Le pommeau de l'arme se dévisse et %s se luxe l'épaule"
+	                },
+    ActSwitchEquipmentLabel:"Changer d'équipement",
+    ActSwitchEquipmentDesc:"Placer un objet dans sa main",
+    ActSwitchEquipmentLog: {
+    				execute: "%s change d'équipement",
+    				qa_perfect:"Coup magistral! le changement est tellement rapide que vous pouvez executer une autre action",
+    				qa_v_good: "",
+	                qa_good: "",
+	                qa_no_qa: "",
+	                qa_bad: "",
+	                qa_v_bad: "",
+	                qa_worth: "Catastrophe! la boucle de votre sac à dos se coince et endommage votre arme."
 	                },
     ActDoNothingLabel:"Passer son tour",
     ActDoNothingDesc:"Ne rien faire est parfois une bonne solution pour temporiser et laisser votre interaction agir",

@@ -6,7 +6,7 @@ _class= JClass.create( 'ScratchByClaw', aoe.Action,
 		
 		$super(this.getJsClassName());
 		this.skillClassName = 'Wrestling';
-		this.equipmentClassName = 'Claw';
+		this.equipmentClassName = ['Claw'];
 	},
 	
 	doable: function(pPlayer){
@@ -42,6 +42,10 @@ _class= JClass.create( 'ScratchByClaw', aoe.Action,
 			break;
 			case Dice.QUALITY_VERY_GOOD:
 				damage += 40;
+				this.opponent.wound(damage);
+				break;
+			case Dice.QUALITY_PERFECT:
+				damage += 50;
 				this.opponent.wound(damage);
 				break;
 			case Dice.QUALITY_BAD:

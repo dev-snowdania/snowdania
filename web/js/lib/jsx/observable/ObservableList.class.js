@@ -84,14 +84,21 @@ _class= JClass.create( 'ObservableList',
 	
 	reset: function(i){
 		this.index = -1;
+		return this;
 	},
 	
 	getByJsClassName : function(pElemClsName)
 	{
 		var newElem=[];
+		//console.log(typeof pElemClsName);
+		if(typeof pElemClsName != 'object'){
+			pElemClsName = [pElemClsName];
+		}
 		this.elements.each(function(el,i)
 		{
-			if(el.getJsClassName()==pElemClsName) newElem.push(el);
+			if(pElemClsName.intersect([el.getJsClassName()]).length>0) {
+				newElem.push(el);
+			}
 		},this);
 		return newElem;
 	},
@@ -114,5 +121,21 @@ _class= JClass.create( 'ObservableList',
 		while(el=this.next()){
 			this.pcs.firePropertyChange(this.addEventKey,null,el);
 		}
+	},
+	
+	each: function(pCallBackFunc,pContext){
+		var elem = this.next();
+		
+		if(elem){
+			var r = pCallBackFunc(elem,this,pContext);
+			
+			if(typeof r =="boolean" && !r){
+				return;
+			}else{
+				return this.each(pCallBackFunc,pContext);
+			}
+		}
+		
+		return this;
 	}
 });

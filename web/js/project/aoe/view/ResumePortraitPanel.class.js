@@ -50,6 +50,16 @@ _class=JClass.create("ResumePortraitPanel",jsx.JPanel,
 		
 		this.gSep4=new jsx.JSeparator();
 		
+		this.gTirednessFld=new jsx.JTextField(null,"gTirednessFld","gFld gTxtFld gReadOnlyFld");
+		this.gTirednessFld.setReadOnly(true);
+		
+		this.gTirednessLabel=new jsx.JLabel("TIR",this.gTirednessFld,"gTirednessLabel","gLabel gLabelFld");
+		
+		this.gSep5=new jsx.JSeparator();
+		
+	},
+	
+	draw: function($super){
 		this.addComponent(this.gSurnameTxtFld);
 		this.addComponent(this.gSep1);
 		this.addComponent(this.gPdvLabel);
@@ -63,7 +73,11 @@ _class=JClass.create("ResumePortraitPanel",jsx.JPanel,
 		this.addComponent(this.gSep4);
 		this.addComponent(this.gPopularityLabel);
 		this.addComponent(this.gPopularityFld);
+		this.addComponent(this.gSep5);
+		this.addComponent(this.gTirednessLabel);
+		this.addComponent(this.gTirednessFld);
 		
+		$super();
 	},
 	
 	getSurnameField: function(){
@@ -84,5 +98,9 @@ _class=JClass.create("ResumePortraitPanel",jsx.JPanel,
 	
 	getPopularityField: function(){
 		return this.gPopularityFld;
+	},
+	
+	getTirednessField: function(){
+		return this.gTirednessFld;
 	}
 });

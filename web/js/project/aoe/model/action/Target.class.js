@@ -6,7 +6,7 @@ _class= JClass.create( 'Target', aoe.Action,
 		
 		$super(this.getJsClassName());
 		this.skillClassName = "Concentrate";
-		this.equipmentClassName = null;
+		this.equipmentClassName = [];
 	},
 	
 	doable: function(pPlayer){

@@ -31,6 +31,16 @@ _class= JClass.create( 'InteractiveSession',
 		this.player = pPlayer;
 		this.interaction = pInteraction;
 		this.mapCase = pMapCase;
+		
+		this.previousAction= null;
+	},
+	
+	getPreviousAction: function(){
+		return this.previousAction;
+	},
+	
+	setPreviousAction: function(pAction){
+		this.previousAction = pAction;
 	},
 	
 	getPlayer: function(){
@@ -112,8 +122,13 @@ _class= JClass.create( 'InteractiveSession',
 		return this.distance;
 	},
 	
-	reduceDistance:function(pDistance){
-		this.setDistance(this.distance-pDistance);
+	reduceDistance:function(pDistance,pLimit){
+		var newVal = this.distance-pDistance;
+		if(newVal<pLimit){
+			this.setDistance(pLimit);
+		}else{
+			this.setDistance(newVal);
+		}
 	},
 	
 	setTurn: function(pTurn){
@@ -157,11 +172,31 @@ _class= JClass.create( 'InteractiveSession',
 		
 		this.turnCounter++;
 		
-		if(this.turn==aoe.InteractiveSession.PLAYER){
-			this.setTurn(aoe.InteractiveSession.OPPONENT);
-			this.playOpponent();
+		var change = true;
+		var prvAction = this.getPreviousAction();
+		if(prvAction){
+			if((prvAction.getJsClassName() == "GetOut" || prvAction.getJsClassName() == "Catch") && prvAction.getDiceThrow().succeed){
+				//current player keep inititative;
+				change = false;
+			}
+		}
+		
+		
+		if(change){
+			if(this.turn==aoe.InteractiveSession.PLAYER){
+				this.setTurn(aoe.InteractiveSession.OPPONENT);
+				this.playOpponent();
+			}else{
+				this.setTurn(aoe.InteractiveSession.PLAYER);
+			}
 		}else{
-			this.setTurn(aoe.InteractiveSession.PLAYER);
+			if(this.turn==aoe.InteractiveSession.PLAYER){
+				this.setTurn(aoe.InteractiveSession.PLAYER);
+				
+			}else{
+				this.setTurn(aoe.InteractiveSession.OPPONENT);
+				this.playOpponent();
+			}
 		}
 	},
 	

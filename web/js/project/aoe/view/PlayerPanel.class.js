@@ -43,43 +43,43 @@ _class=JClass.create("PlayerPanel",jsx.JPanel,
 	},
 	
 	initNavigationPanel: function(){
-		this.gBtnW = new jsx.JButton(aoe.getLang('BtnWLab'));
+		this.gBtnW = new jsx.JButton(aoe.getLang('BtnWLab'),"btnDirectionW","btnDirection");
 		this.gBtnW.setInfoBulle(aoe.getLang('BtnWInfo'));
 		this.gBtnW.addEventListener("click",function(e,ctx){
 			ctx.controller.movePlayerWest();
 		},this);
 		
-		this.gBtnN = new jsx.JButton("N");
+		this.gBtnN = new jsx.JButton("N","btnDirectionN","btnDirection");
 		this.gBtnN.addEventListener("click",function(e,ctx){
 			ctx.controller.movePlayerNorth();
 		},this);
 		
-		this.gBtnE = new jsx.JButton("E");
+		this.gBtnE = new jsx.JButton("E","btnDirectionE","btnDirection");
 		this.gBtnE.addEventListener("click",function(e,ctx){
 			ctx.controller.movePlayerEast();
 		},this);
 		
-		this.gBtnS = new jsx.JButton("S");
+		this.gBtnS = new jsx.JButton("S","btnDirectionS","btnDirection");
 		this.gBtnS.addEventListener("click",function(e,ctx){
 			ctx.controller.movePlayerSouth();
 		},this);
 		
-		this.gBtnNW = new jsx.JButton("NW");
+		this.gBtnNW = new jsx.JButton("NW","btnDirectionNW","btnDirection");
 		this.gBtnNW.addEventListener("click",function(e,ctx){
 			ctx.controller.movePlayerNorthWest();
 		},this);
 		
-		this.gBtnNE = new jsx.JButton("NE");
+		this.gBtnNE = new jsx.JButton("NE","btnDirectionNE","btnDirection");
 		this.gBtnNE.addEventListener("click",function(e,ctx){
 			ctx.controller.movePlayerNorthEast();
 		},this);
 		
-		this.gBtnSW = new jsx.JButton("SW");
+		this.gBtnSW = new jsx.JButton("SW","btnDirectionSW","btnDirection");
 		this.gBtnSW.addEventListener("click",function(e,ctx){
 			ctx.controller.movePlayerSouthWest();
 		},this);
 		
-		this.gBtnSE = new jsx.JButton("SE");
+		this.gBtnSE = new jsx.JButton("SE","btnDirectionSE","btnDirection");
 		this.gBtnSE.addEventListener("click",function(e,ctx){
 			ctx.controller.movePlayerSouthEast();
 		},this);
@@ -88,11 +88,12 @@ _class=JClass.create("PlayerPanel",jsx.JPanel,
 	},
 	
 	initNavigationTable: function(){
-		this.gTable=new jsx.JTable();
+		this.gTable=new jsx.JTable("gTableNavigation");
 		this.gTable.createCell(0,0).addComponent(this.gBtnNW);
 		this.gTable.createCell(0,1).addComponent(this.gBtnN);
 		this.gTable.createCell(0,2).addComponent(this.gBtnNE);
 		this.gTable.createCell(1,0).addComponent(this.gBtnW);
+		//this.gTable.createCell(1,1).setValue("&nbsp;");
 		this.gTable.createCell(1,2).addComponent(this.gBtnE);
 		this.gTable.createCell(2,0).addComponent(this.gBtnSW);
 		this.gTable.createCell(2,1).addComponent(this.gBtnS);
@@ -105,6 +106,7 @@ _class=JClass.create("PlayerPanel",jsx.JPanel,
 				data[i][j]="";
 			}
 		}
+		data[1][1] = "&nbsp;";
 		this.gTable.setDataModel(data);
 		this.addComponent(this.gTable);
 	},
@@ -218,9 +220,20 @@ _class=JClass.create("PlayerPanel",jsx.JPanel,
 				var mPlayer=evt.getSource();
 				this.gResumePortrait.getPopularityField().getJQuery().val(evt.getNewValue());
 			break;
+			case 'tiredness':
+				var mPlayer=evt.getSource();
+				this.gResumePortrait.getTirednessField().getJQuery().val(evt.getNewValue());
+			break;
 			case 'img':
 				var mPlayer=evt.getSource();
 				this.gImagePortrait.getJQuery().css('background-image',"url("+evt.getNewValue()+")");
+				
+				if(mPlayer.imgOptions){
+					
+					for(i in mPlayer.imgOptions){
+						this.gImagePortrait.getJQuery().css(i, mPlayer.imgOptions[i]);
+					}
+				}
 			break;
 		}
 	}

@@ -31,10 +31,15 @@ _class=JClass.create("MapPanel",jsx.JPanel,
 	
 	initMap : function(map){
 		this.gTable = new aoe.MapTablePanel();
+		
 		this.numCols=0;
 		this.numRows=0;
 		
 		if(map!=null){
+			
+			this.gTable.setCss('background-image','url('+map.getBackground()+')');
+			this.gTable.setCss('opacity','0.7');
+			
 			var i,j,gCase;
 			this.numCols=map.getNumCols();
 			this.numRows=map.getNumRows();			
@@ -49,8 +54,10 @@ _class=JClass.create("MapPanel",jsx.JPanel,
 						gCase.setId(idCase);
 						gCase.setClassName(mCase.getClassName());
 						gCase.setMapPanel(this);
-						gCase.addEventListener('mouseenter');
-						gCase.addEventListener('mouseleave');
+						gCase.addEventListener('mouseenter',function(e){
+							console.log("x= "+this.x+" y="+this.y);
+						});
+						//gCase.addEventListener('mouseleave');
 						gCase.setInfoBulle(j+','+i);
 					}
 					data[i][j]="";
@@ -91,8 +98,14 @@ _class=JClass.create("MapPanel",jsx.JPanel,
 		this.caseHeight=pHeight;
 		jQuery('#'+this.getId()+' .tbl-row DIV').width(pWidth);
 		jQuery('#'+this.getId()+' .tbl-row DIV').height(pHeight);
-		//alert(this.numCols);
-		jQuery('#'+this.getId()+' .tbl').width((pWidth*(this.numCols+13)));
+		
+		var mapCase = jQuery('#'+this.getId()+' .tbl-row DIV:eq(0)');
+		var leftBorderWidth = parseInt(mapCase.css('border-left-width').replace('px',''));
+		var rightBorderWidth = parseInt(mapCase.css('border-right-width').replace('px',''));
+		
+		var realWidth = (mapCase.width()) + leftBorderWidth + rightBorderWidth;
+		
+		jQuery('#'+this.getId()+' .tbl').width((realWidth*(this.numCols)));
 	},
 	
 	zoom: function(pInc){

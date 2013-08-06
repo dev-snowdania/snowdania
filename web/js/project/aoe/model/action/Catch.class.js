@@ -1,59 +1,59 @@
 JClass.import('aoe.model.action.Action');
 
-_class= JClass.create( 'MoveForward', aoe.Action,
+_class= JClass.create( 'Catch', aoe.Action,
 {
 	initialize: function($super){
 		
 		$super(this.getJsClassName());
-		this.skillClassName = null;
+		this.skillClassName = 'Wrestling';
 		this.equipmentClassName = [];
 	},
 	
 	checkStatus : function(){
 		
-		if(this.context.getDistance()<=1){
+		if(this.context.getDistance()!=1){
 			this.setStatus(aoe.Action.STATUS_INACTIVE);
 			return false;
 		}else{
 			this.setStatus(aoe.Action.STATUS_ACTIVE);
+			return true;
 		}
-		
-		return true;
 	},
 	
 	preExecute : function(){
 		
-		var l = 100;
+		if(!this.skill){
+			return false;
+		}
 		
+		var l = this.skill.getLevel();
 		return l;
 	},
 	
 	postExecute : function(pResult, pDiceThrow){
 		
-		var mvPt = this.player.getSpeed(true);
-		var limit = 1;
-		
 		switch(pDiceThrow.quality){
 			case Dice.NO_QUALITY:
-				this.context.reduceDistance(mvPt,limit);
+				this.context.setDistance(0);
 			break;
 			case Dice.QUALITY_GOOD:
-				this.context.reduceDistance(mvPt,limit);
+				this.context.setDistance(0);
 			break;
 			case Dice.QUALITY_VERY_GOOD:
-				this.context.reduceDistance(mvPt,limit);
+				this.context.setDistance(0);
 				break;
 			case Dice.QUALITY_PERFECT:
-				this.context.reduceDistance(mvPt,limit);
+				this.context.setDistance(0);
+				damage = 10;
+				this.opponent.wound(damage);
 				break;
 			case Dice.QUALITY_BAD:
-				;
 				break;
 			case Dice.QUALITY_VERY_BAD:
-				;
 				break;
 			case Dice.QUALITY_WORTH:
-				;
+				damage = 10;
+				this.player.wound(damage);
 				break;
 		}
 		

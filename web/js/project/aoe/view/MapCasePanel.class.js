@@ -9,8 +9,8 @@ _class=JClass.create("MapCasePanel",jsx.JTableCell,
 		this.jp=new jsx.JPanel();
 		// le map panel parent
 		this.mapPanel=null;
-		this.x=x;
-		this.y=y;
+		this.x=y;
+		this.y=x;
 	},
 	
 	draw : function($super)
@@ -57,7 +57,9 @@ _class=JClass.create("MapCasePanel",jsx.JTableCell,
 					}
 				} else{
 					// player enter case
-					this.setValue('J');
+					//this.setValue('J');
+					this.setValue('&nbsp;');
+					this.jObject.addClass('current-player');
 					
 					var x=mPlayer.getPosX('x');
 					var y=mPlayer.getPosY('y');

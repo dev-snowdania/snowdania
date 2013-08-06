@@ -6,7 +6,7 @@ _class= JClass.create( 'Action',
 {
 	initialize: function(pLogJsClassName){
 		this.skillClassName = null;
-		this.equipmentClassName = null;
+		this.equipmentClassName = [];
 		
 		if(pLogJsClassName){
 			this.label = aoe.getLang('Act'+pLogJsClassName+'Label');
@@ -23,6 +23,8 @@ _class= JClass.create( 'Action',
 		
 		this.status = aoe.Action.STATUS_ACTIVE;
 		
+		this.diceThrow = null;
+		
 		this.pcs = new jsx.PropertyChangeSupport(this);
 	},
 	
@@ -32,6 +34,10 @@ _class= JClass.create( 'Action',
 	
 	getSkillJsClassName: function(){
 		return this.skillClassName;
+	},
+	
+	getDiceThrow: function(){
+		return this.diceThrow;
 	},
 	
 	getEquipmentJsClassName: function(){
@@ -100,12 +106,14 @@ _class= JClass.create( 'Action',
 			this.skill = skills[0];
 		}
 		
-		if(this.equipmentClassName){
+		if(this.equipmentClassName.length>0){
 			var equipments = pPlayer.getCurrentHand().getByJsClassName(this.equipmentClassName);
+			//console.log(equipments);
 			if(equipments.length==0){
 				return false;
 			}
 			this.equipment = equipments[0];
+			
 		}
 	},
 	
@@ -125,37 +133,27 @@ _class= JClass.create( 'Action',
 	
 	checkStatus : function(pSkill,pEquipment){
 		
-		if(!pSkill){
-			pSkill = this.skill;
+		if(pSkill){
+			 this.skill = pSkill;
 		}
 		
-		if(!pEquipment){
-			pEquipment = this.equipment;
+		if(pEquipment){
+			 this.equipment = pEquipment;
 		}
 		
 		status = aoe.Action.STATUS_ACTIVE;
 		
-		/*if(!this.equipment){
-			if(this.equipmentClassName){
-				var equipments = this.player.getCurrentHand().getByJsClassName(this.equipmentClassName);
-				if(equipments.length==0){
-					return false;
-				}
-				this.addToContext(equipments[0],'equipment');
-			}
-		}*/
-		
-		if(pEquipment){
-			if(!pEquipment.checkForAction(this)){
+		if(this.equipment){
+			if(!this.equipment.checkForAction(this)){
 				status = aoe.Action.STATUS_INACTIVE;
 			}
 		}else{
-			if(this.equipmentClassName){
+			if(this.equipmentClassName.length>0){
 				status = aoe.Action.STATUS_INACTIVE;
 			}
 		}
 		
-		if(pSkill){
+		if(this.skill){
 			;
 		}else{
 			if(this.skillClassName){
@@ -221,6 +219,7 @@ _class= JClass.create( 'Action',
 			console.log(this.logMessage['execute'].sub('%s',this.player.getJsClassName()));
 			
 			var diceThrow=Dice.throwD100(level);
+			this.diceThrow = diceThrow;
 			var r = diceThrow.succeed;
 		
 			var msg = this.logMessage[diceThrow.quality];
@@ -230,6 +229,8 @@ _class= JClass.create( 'Action',
 			var result = {result: r, diceThrow: diceThrow, logMessage: msg};
 			
 			this.postExecute(r,diceThrow);
+			
+			this.context.setPreviousAction(this);
 			
 			//var interactiveSession = this.context.get('interactiveSession');
 			

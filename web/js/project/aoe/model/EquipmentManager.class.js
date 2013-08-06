@@ -12,12 +12,38 @@ _class= JClass.create( 'EquipmentManager', jsx.ObservableList,
 		this.container = pContainer;
 	},
 	
+	checkObject: function(pObject){
+		if(this.container){
+			return this.container.checkObject(pObject);
+		}else{
+			
+			// current hand
+			this.reset();
+			var eqp;
+			var count = 0;
+			while(eqp= this.next()){
+				if(eqp.getType()==aoe.Equipment.TWO_HANDS){
+					count = 2;
+				}else{
+					count++;
+				}
+			}
+			
+			if(count<2){
+				return true;
+			}else{
+				return false;
+			}
+		}
+	},
+	
 	addObject: function(pObject){
 		if(this.container){
 			if(this.container.addObject(pObject)){
 				return this.add(pObject,pObject.getOid());
 			}
 		}else{
+			
 			// current hand
 			this.reset();
 			var eqp;

@@ -1,12 +1,12 @@
 JClass.import('aoe.model.action.Action');
 
-_class= JClass.create( 'ShotArrow', aoe.Action,
+_class= JClass.create( 'HitWithTip', aoe.Action,
 {
 	initialize: function($super){
 		
 		$super(this.getJsClassName());
-		this.skillClassName = 'Archery';
-		this.equipmentClassName = ['Bow'];
+		this.skillClassName = 'Fencing';
+		this.equipmentClassName = ['Sword','Dagger'];
 	},
 	
 	preExecute : function(){
@@ -15,32 +15,32 @@ _class= JClass.create( 'ShotArrow', aoe.Action,
 			return false;
 		}
 		
-		var delta = this.context.checkContextForPlayer(player,"SKILL",["DISTANT_THROW"]);
+		var delta = this.context.checkContextForPlayer(this.player,"SKILL",["DISTANT_THROW"]);
 		
-		var level = this.skill.getLevel() + delta;
+		var level = this.skill.getLevel() 
+		// add bonus and malus
+		level += delta;
 		
-		if(this.equipment){
-			var qa = this.equipment.getQualityLabel();
-			switch(qa){
-				case aoe.Equipment.QUALITY_WORTH:
-					level -= 15;
-					break;
-				case aoe.Equipment.QUALITY_VERY_BAD:
-					level -= 10;
-					break;
-				case aoe.Equipment.QUALITY_BAD:
-					level -= 5;
-					break;
-				case aoe.Equipment.QUALITY_GOOD:
-					level += 5;
-					break;
-				case aoe.Equipment.QUALITY_VERY_GOOD:
-					level += 10;
-					break;
-				case aoe.Equipment.QUALITY_BEST:
-					level += 15;
-					break;
-			}
+		var qa = this.equipment.getQualityLabel();
+		switch(qa){
+			case aoe.Equipment.QUALITY_WORTH:
+				level -= 15;
+				break;
+			case aoe.Equipment.QUALITY_VERY_BAD:
+				level -= 10;
+				break;
+			case aoe.Equipment.QUALITY_BAD:
+				level -= 5;
+				break;
+			case aoe.Equipment.QUALITY_GOOD:
+				level += 5;
+				break;
+			case aoe.Equipment.QUALITY_VERY_GOOD:
+				level += 10;
+				break;
+			case aoe.Equipment.QUALITY_BEST:
+				level += 15;
+				break;
 		}
 		
 		console.log("shot arrow level: "+level);
@@ -50,10 +50,7 @@ _class= JClass.create( 'ShotArrow', aoe.Action,
 	
 	postExecute : function(pResult, pDiceThrow){
 		
-		
-		var damage = this.equipment.getStrength();
-		
-		this.equipment.useUnit(1);
+		var damage = this.equipment.getStrength(this.getJsClassName());
 		
 		switch(pDiceThrow.quality){
 			case Dice.NO_QUALITY:

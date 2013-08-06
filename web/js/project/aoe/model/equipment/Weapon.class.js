@@ -5,23 +5,37 @@ _class= JClass.create( 'Weapon', aoe.Equipment,
 	initialize: function($super,pType,pQuality,pBulk,pStrength,pRange,pLogJsClassName){
 		$super(pType,pQuality,pBulk,pLogJsClassName);
 		this.range = pRange;
-		this.strength = new aoe.Attribute(pStrength);
+		
+		if(typeof pStrength == 'number'){
+			this.strength = {global: new aoe.Attribute(pStrength)};
+		}else{
+			this.strength = pStrength;
+		}
 	},
 	
 	getRange: function(){
 		return this.range;
 	},
 	
-	setStrength : function(pStrength){
+	setStrength : function(pStrength,pAction){
 		
 		if(pStrength<0){
 			pStrength=0;
 		}
 		
-		if(pStrength != this.strength.get()){
-			var oldValue=this.strength.get();
-			this.strength.set(pStrength);
-			this.pcs.firePropertyChange('strength',oldValue,this.strength.get());
+		if(typeof pAction == 'undefined'){
+			pAction = "global";
+		}
+		
+		if(!this.strength[pAction]){
+			this.strength[pAction] = new aoe.Attribute(pStrength);
+			this.pcs.firePropertyChange('strength',null,pStrength,{action: pAction});
+		}else{
+			if(pStrength != this.strength[pAction].get()){
+				var oldValue=this.strength[pAction].get();
+				this.strength[pAction].set(pStrength);
+				this.pcs.firePropertyChange('strength',oldValue,this.strength[pAction].get(),{action: pAction});
+			}
 		}
 	},
 	
@@ -33,17 +47,37 @@ _class= JClass.create( 'Weapon', aoe.Equipment,
 		
 		if(pDamage>0){
 			// if quality change the damage of the weapon change at the ratio
-			var str = this.strength.get() - (this.strength.get()*ratio);
-			this.setStrength(str);
+			for(pAction in this.strength){
+				var str = this.strength[pAction].get() - (this.strength[pAction].get()*ratio);
+				this.setStrength(str,pAction);
+			};
+			
 		}
 	},
 	
-	getStrength: function(){
-		return this.strength.get();
+	getStrength: function(pAction){
+		if(typeof pAction == 'undefined'){
+			pAction = "global";
+		}
+		
+		if(!this.strength[pAction]){
+			pAction = "global";
+		}
+		
+		return this.strength[pAction].get();
 	},
 	
-	getStrengthAttribute: function(){
-		return this.strength;
+	getStrengthAttribute: function(pAction){
+		
+		if(typeof pAction == 'undefined'){
+			pAction = "global";
+		}
+		
+		if(!this.strength[pAction]){
+			pAction = "global";
+		}
+		
+		return this.strength[pAction];
 	},
 	
 	checkForAction: function($super,pAction){

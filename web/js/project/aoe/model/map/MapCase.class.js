@@ -16,6 +16,7 @@ _class= JClass.create( 'MapCase',
 		this.logMsgMoveErr=null;
 		
 		this.visibility = 100;
+		this.coeffTiredness = 1;
 	},
 
 	getPropertyChangeSupport: function(){
@@ -84,6 +85,8 @@ _class= JClass.create( 'MapCase',
 			//this.pcs.firePropertyChange('playerEnterCase',{x:player.getPosX(),y:player.getPosY()});
 			this.setCurrentPlayer(player);
 			
+			player.crossCase(this.coeffTiredness);
+			
 			if(mCaseOld.getJsClass()!=this.getJsClass() && this.logMessage){
 				MVC.getCacheInstance().getObject('uneGameLog').addMessage(this.logMessage);
 			}
@@ -108,6 +111,7 @@ _class= JClass.create( 'MapCase',
 					if(r){
 						if(player.getCurrentHand().addObject(oObject)){
 							this.removeObject(oObject);
+							player.checkAttitude();
 							var oLog=MVC.getCacheInstance().getObject('uneGameLog');
 							oLog.addMessage(oObject.getLogMessage());
 						}else{

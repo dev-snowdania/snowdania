@@ -39,6 +39,10 @@ _class= JClass.create( 'Map',
 		return this.playerPosY;
 	},
 	
+	getBackground: function(){
+		return this.background;
+	},
+	
 	getPropertyChangeSupport:function()
 	{
 		return this.pcs;
@@ -67,10 +71,13 @@ _class= JClass.create( 'Map',
 	{
 		this.includeFile(this.getJsDir()+this.mapFile);
 		var data = dataMap; 
+		this.data = dataMap;
 		if(data!=undefined)
 		{
 			this.numRows=data.map.cases.rows;
 			this.numCols=data.map.cases.cols;
+			
+			this.background = this.getJsDir()+data.map.background;
 			
 			// initialisation
 			for(var i=0;i<this.numRows;i++)
@@ -180,7 +187,57 @@ _class= JClass.create( 'Map',
 		return true;
 	},
 	
-	drawLineFromModel : function(mCase) {
+	/**
+	 * base on the  Bresenham's Line Algorithm.
+	 */
+	drawLineFromModel: function(mCase){
+		var x1 = Math.round(mCase.x);
+		var x2 = Math.round(mCase.x2);
+		var y1 = Math.round(mCase.y);
+		var y2 = Math.round(mCase.y2);
+		
+		var dx, dy, inx, iny, e;
+	     
+	    dx = x2 - x1;
+	    dy = y2 - y1;
+	    inx = dx > 0 ? 1 : -1;
+	    iny = dy > 0 ? 1 : -1;
+	 
+	    dx = Math.abs(dx);
+	    dy = Math.abs(dy);
+	     
+	    if(dx >= dy) {
+	        dy <<= 1;
+	        e = dy - dx;
+	        dx <<= 1;
+	        while (x1 != x2) {
+	        	this.createCaseFromModel(mCase,x1,y1);
+	            //setpixel(x1, y1, color);
+	            if(e >= 0) {
+	                y1 += iny;
+	                e-= dx;
+	            }
+	            e += dy; x1 += inx;
+	        }
+	    } else {
+	        dx <<= 1;
+	        e = dx - dy;
+	        dy <<= 1;
+	        while (y1 != y2) {
+	            //setpixel(x1, y1, color);
+	        	this.createCaseFromModel(mCase,x1,y1);
+	            if(e >= 0) {
+	                x1 += inx;
+	                e -= dy;
+	            }
+	            e += dx; y1 += iny;
+	        }
+	    }
+	    //setpixel(x1, y1, color);
+	    this.createCaseFromModel(mCase,x1,y1);
+	},
+	
+	_drawLineFromModel : function(mCase) {
 		var x1 = Math.round(mCase.x);
 		var x2 = Math.round(mCase.x2);
 		var y1 = Math.round(mCase.y);

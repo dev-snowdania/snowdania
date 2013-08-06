@@ -6,7 +6,7 @@ _class= JClass.create( 'RunAway', aoe.Action,
 		
 		$super(this.getJsClassName());
 		this.skillClassName = 'Running';
-		this.equipmentClassName = null;
+		this.equipmentClassName = [];
 	},
 	
 	preExecute : function(){

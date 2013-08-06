@@ -5,7 +5,8 @@
 <title>SNOWDANIA</title>
 <link REL="StyleSheet" HREF="web/css/main.css" TITLE="Contemporary" TYPE="text/css">
 <script type="text/javascript" src="web/js/lib/prototype/prototype.js"></script>
-<script type="text/javascript" src="web/js/lib/jquery/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="web/js/lib/jquery/jquery-1.9.1.js"></script>
+<script type="text/javascript" src="web/js/lib/jquery/jquery-ui-1.10.3.custom.min.js"></script>
 <script type="text/javascript" src="web/js/lib/jquery/plugins/jquery.scrollTo-min.js"></script>
 
 <script type="text/javascript" src="web/js/lib/jsx/jsx.js"></script>
@@ -60,7 +61,7 @@ jQuery(document).ready(function(){
 jQuery(document).ready(function(e){
 
 	jQuery('BODY').append(jQuery('<div></div>').attr('id','infoBulle'));
-	jQuery('[infobulle]').live('mouseenter mouseleave',function(e){
+	jQuery('#infoBulle').on('mouseenter mouseleave',function(e){
 		if (e.type == 'mouseenter') {
 			jQuery('#infoBulle').css('z-index',1000);
 		    jQuery('#infoBulle').text(jQuery(this).attr('infobulle')).css('top', e.pageY+10).css('left', e.pageX+10).css('zIndex',1000).fadeIn();

@@ -6,7 +6,7 @@ _class= JClass.create( 'HitWithEdge', aoe.Action,
 		
 		$super(this.getJsClassName());
 		this.skillClassName = 'Fencing';
-		this.equipmentClassName = 'Sword';
+		this.equipmentClassName = ['Sword','Dagger'];
 	},
 	
 	preExecute : function(){
@@ -50,7 +50,7 @@ _class= JClass.create( 'HitWithEdge', aoe.Action,
 	
 	postExecute : function(pResult, pDiceThrow){
 		
-		var damage = this.equipment.getStrength();
+		var damage = this.equipment.getStrength(this.getJsClassName());
 		
 		switch(pDiceThrow.quality){
 			case Dice.NO_QUALITY:

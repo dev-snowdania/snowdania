@@ -62,16 +62,48 @@ _class=JClass.create("InteractionWindow",jsx.JWindow,
 	},
 	
 	propertyChangeEquipmentManager: function(evt){
+		
+		var eqp = evt.getNewValue();
+		
+		this.leftInteractionPanel.getActionPanelManager().reset().each(function(pPanel,pList,pEvt){
+			if(pPanel.getEquipmentChooserField() && pPanel.getAction().getEquipmentJsClassName().intersect([eqp.getJsClassName()]).length>0){
+				switch(evt.getPropertyName()){
+					case 'addHandEquipment':
+						if(!pPanel.getEquipmentChooserField().hasOption(eqp.getOid())){
+							pPanel.getEquipmentChooserField().addOption(eqp.getOid(),eqp.getLabel());
+							
+							pPanel.getEquipmentChooserField().setValue(eqp.getOid());
+							
+							pPanel.getEquipmentChooserField().getJQuery().trigger("change");
+							
+							pPanel.addEquipmentPanel(eqp);
+						}
+					break;
+					case 'removeHandEquipment':
+						if(pPanel.getEquipmentChooserField().hasOption(eqp.getOid())){
+							pPanel.getEquipmentChooserField().removeOption(eqp.getOid());
+							
+							pPanel.removeEquipmentPanel(eqp);
+						}
+					break;
+					default:
+						break;
+				}
+			}
+		},evt);
+		
 		switch(evt.getPropertyName()){
 			case 'addHandEquipment':
-				var oPlayer=evt.getSource();
-				var oObject=evt.getNewValue();
-				this.gHandPanel.addObject(oObject);
+				this.leftInteractionPanel.getActionPanelManager().get("SwitchEquipment").getCurrentHandField().addOption(eqp.getOid().toString(),eqp.getLabel());
 			break;
 			case 'removeHandEquipment':
-				var oPlayer=evt.getSource();
-				var oObject=evt.getNewValue();
-				this.gHandPanel.removeObject(oObject);
+				this.leftInteractionPanel.getActionPanelManager().get("SwitchEquipment").getCurrentHandField().removeOption(eqp.getOid().toString());
+			break;
+			case 'addEquipment':
+				this.leftInteractionPanel.getActionPanelManager().get("SwitchEquipment").getBackpackField().addOption(eqp.getOid().toString(),eqp.getLabel());
+			break;
+			case 'removeEquipment':
+				this.leftInteractionPanel.getActionPanelManager().get("SwitchEquipment").getBackpackField().removeOption(eqp.getOid().toString());
 			break;
 			default:
 				break;
@@ -80,7 +112,7 @@ _class=JClass.create("InteractionWindow",jsx.JWindow,
 	
 	propertyChangeAction: function(evt){
 		
-		var panel;
+		/*var panel;
 		if(evt.getSource().getContext().getPlayer().getJsClassName() == 'Player'){
 			panel = this.leftInteractionPanel;
 		}else{
@@ -102,28 +134,30 @@ _class=JClass.create("InteractionWindow",jsx.JWindow,
 				}
 			break;
 			
-		}
+		}*/
 	},
 	
 	propertyChangeEquipment: function(evt){
+		var eqp = evt.getSource();
 		
-		var eq = evt.getSource();
+		this.leftInteractionPanel.getActionPanelManager().reset().each(function(pPanel,pList,pEvt){
+			var eqp2 = pPanel.getEquipment();
+			if(eqp2 && eqp2.compareTo(eqp)){
+				switch(evt.getPropertyName()){
+					case 'unit':
+						pPanel.getEquipmentUnitField().setValue(evt.getNewValue());
+					break;
+					case 'quality':
+						pPanel.getEquipmentQualityField().setValue(evt.getNewValue()+" ("+aoe.getLang(evt.getSource().getQualityLabel())+")");
+					break;
+					case 'strength':
+						pPanel.getEquipmentDamageField().setValue(evt.getNewValue());
+					break;
+					
+				}
+			}
+		},evt);
 		
-		//var panels = this.leftInteractionPanel.getActionPanelManager().getByEquipment(eq.getOid()));
-		
-		switch(evt.getPropertyName())
-		{
-			case 'unit':
-				//panels.getEquipmentUnitField().setValue(evt.getNewValue());
-			break;
-			case 'quality':
-				//this.leftInteractionPanel.getActionPanelManager().get(act).getEquipmentQualityField().setValue(evt.getNewValue()+" ("+aoe.getLang(evt.getSource().getQualityLabel())+")");
-			break;
-			case 'strength':
-				//this.leftInteractionPanel.getActionPanelManager().get(act).getEquipmentDamageField().setValue(evt.getNewValue());
-			break;
-			
-		}
 	},
 	
 	propertyChangeInteraction: function(evt){

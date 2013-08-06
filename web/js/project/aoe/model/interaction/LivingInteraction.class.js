@@ -27,6 +27,11 @@ _class= JClass.create( 'LivingInteraction', aoe.Interaction,
 	
 	setStatus : function(pStatus){
 		if(pStatus != this.status){
+			
+			if(pStatus==aoe.LivingInteraction.STATUS_DEAD){
+				console.log("%s rend son dernier souffle après un combat épique".gsub("%s",this.getJsClassName()));
+			}
+			
 			var oldValue=this.status;
 			this.status=pStatus;
 			this.pcs.firePropertyChange('status',oldValue,this.status);

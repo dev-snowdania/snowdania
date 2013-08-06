@@ -23,6 +23,17 @@ _class= JClass.create( 'Container', aoe.Equipment,
 		return true;
 	},
 	
+	checkObject: function(pObject){
+		
+		var storage = (this.storage.get() + pObject.getBulk());
+		
+		if(storage> this.storage.getMax()){
+			return false;
+		}else{
+			return true;
+		}
+	},
+	
 	addObject: function(pObject){
 		if(this.setStorage(this.storage.get() + pObject.getBulk())){
 			console.log("add object %po to %co".gsub("%po",pObject.getJsClassName()).gsub("%co",this.getJsClassName()));

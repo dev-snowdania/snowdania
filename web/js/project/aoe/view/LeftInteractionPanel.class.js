@@ -1,5 +1,6 @@
 JClass.import('aoe.view.InteractionPanel');
 JClass.import('aoe.view.InteractionActionPanel');
+JClass.import('aoe.view.ActionPanelManager');
 
 JClass.import('jsx.observable.ObservableList');
 _class=JClass.create("LeftInteractionPanel",aoe.InteractionPanel,
@@ -12,20 +13,27 @@ _class=JClass.create("LeftInteractionPanel",aoe.InteractionPanel,
 		
 		this.gLabel=new jsx.JLabel(this.player.getName(),null,"gLabelInteractionPlayer");
 		
-		this.actionPanelManager = new jsx.ObservableList();
+		this.actionPanelManager = new aoe.ActionPanelManager();
 		
-		this.actions.reset();
-		var act,pane;
-		while(act = this.actions.next()){
-			pane = new aoe.InteractionActionPanel(act);
-			this.actionPanelManager.add(pane,act.getJsClassName());
-		}
+		this.actions.reset().each(function(pAction,pList,pContext){
+			
+			try{
+				var actType = "aoe.view."+pAction.getJsClassName()+"ActionPanel";
+				var oCls = JClass.import(actType);
+				
+				var pane = new oCls(pAction);
+			}
+			catch(e){
+				var pane = new aoe.InteractionActionPanel(pAction);
+			}
+			
+			pAction.getPropertyChangeSupport().addListener(pane);
+			
+			pContext.actionPanelManager.add(pane,pAction.getJsClassName());
+		},this);
 	},
 	
-	getActionPanelManager: function(reset){
-		if(reset){
-			this.actionPanelManager.reset();
-		}
+	getActionPanelManager: function(){
 		return this.actionPanelManager;
 	},
 	

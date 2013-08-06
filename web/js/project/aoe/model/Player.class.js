@@ -1,4 +1,5 @@
 JClass.import('jsx.entities.PropertyChangeSupport');
+JClass.import('aoe.model.Attribute');
 
 //managers
 JClass.import('aoe.model.EquipmentManager');
@@ -6,6 +7,7 @@ JClass.import('aoe.model.SkillManager');
 
 //Equipment
 JClass.import('aoe.model.equipment.Sword');
+JClass.import('aoe.model.equipment.Dagger');
 JClass.import('aoe.model.equipment.Backpack');
 
 //skills
@@ -33,7 +35,10 @@ _class= JClass.create( 'Player',
 		this.popularity = 0;
 		this.attitude = aoe.Player.ATTITUDE_NEUTRAL;
 		this.pointExperience = 0;
+		this.tiredness= new aoe.Attribute(100);
+		
 		this.speed = 5; // in kilometer per hour
+		this.caseCounter = this.speed*6;
 		this.lang = null;
 		this.posX = -1;
 		this.posY = -1;
@@ -43,7 +48,7 @@ _class= JClass.create( 'Player',
 		var fencing = new aoe.Fencing(40);
 		this.skills.add(fencing,fencing.getJsClassName());
 		
-		var wrestling = new aoe.Wrestling(10);
+		var wrestling = new aoe.Wrestling(40);
 		this.skills.add(wrestling,wrestling.getJsClassName());
 		
 		var run = new aoe.Running(80);
@@ -61,13 +66,58 @@ _class= JClass.create( 'Player',
 		var backpack = new aoe.Backpack();
 		this.backpack.setContainer(backpack);
 		
-		var sword = new aoe.Sword();
+		var sword = new aoe.Sword(70,70);
 		this.backpack.addObject(sword);
+		
+		var dagger = new aoe.Dagger();
+		this.backpack.addObject(dagger);
 		
 		this.currentHand=new aoe.EquipmentManager();
 		this.currentHand.setEventKeys('addHandEquipment','removeHandEquipment');
 		
 		this.pcs = new jsx.PropertyChangeSupport(this);
+		
+		this.resetCaseCounter();
+	},
+	
+	resetCaseCounter: function(){
+		var caseCounter = this.speed * 6;	
+		this.setCaseCounter(caseCounter);
+	},
+	
+	crossCase: function(pUnit){
+		var caseCounter = this.caseCounter - pUnit;
+		this.setCaseCounter(caseCounter);
+	},
+	
+	setCaseCounter : function(pUnit){
+		
+		if(pUnit != this.caseCounter){
+			var oldValue=this.caseCounter;
+			this.caseCounter=pUnit;
+			this.pcs.firePropertyChange('caseCounter',oldValue,this.caseCounter);
+			
+			var ratio = (Math.abs(oldValue-this.caseCounter))/(this.speed*6);
+			
+			var tiredness = this.tiredness.get() - Math.ceil(ratio*this.tiredness.getMax());
+			/*console.log("Case counter:"+this.caseCounter);
+			console.log("Ratio:"+ratio);
+			console.log("TIR:"+tiredness);*/
+			this.setTiredness(tiredness);
+		}
+	},
+	
+	setTiredness : function(pTiredness){
+		
+		if(pTiredness<=0){
+			console.log("il vous faut dormir");
+		}
+		
+		if(pTiredness != this.tiredness.get()){
+			var oldValue = this.tiredness.get();
+			this.tiredness.set(pTiredness);
+			this.pcs.firePropertyChange('tiredness',oldValue,this.tiredness.get());
+		}
 	},
 	
 	getPropertyChangeSupport:function(){
@@ -117,10 +167,27 @@ _class= JClass.create( 'Player',
 		this.pcs.firePropertyChange('arg',oldValue,this.argent);
 	},
 	
-	setAttitude : function(atd){
-		var oldValue=this.attitude;
-		this.attitude=atd;
-		this.pcs.firePropertyChange('atd',oldValue,this.attitude);
+	setAttitude : function(pAtd){
+		
+		if(pAtd!= this.attitude){
+			var oldValue=this.attitude;
+			this.attitude=pAtd;
+			this.pcs.firePropertyChange('atd',oldValue,this.attitude);
+		}
+	},
+	
+	checkAttitude : function(){
+		
+		var atd = aoe.Player.ATTITUDE_NEUTRAL;
+		
+		this.currentHand.reset().each(function(pEquipment,pList,pContext){
+			if(pEquipment instanceof aoe.Weapon){
+				atd = aoe.Player.ATTITUDE_HOSTILE;
+				return false;
+			}
+		},this);
+		
+		this.setAttitude(atd);
 	},
 	
 	setPopularity : function(pop){
@@ -176,8 +243,15 @@ _class= JClass.create( 'Player',
 		return this.attitude;
 	},
 	
-	setImage : function(pImg){
-		this.img=pImg;
+	setImage : function(pImg,pOption){
+		
+		if(pImg != this.img){
+			var oldValue = this.img;
+			this.img=pImg;
+			this.imgOptions = pOption;
+			
+			this.pcs.firePropertyChange('img',oldValue,this.img);
+		}
 	},
 	
 	getImage : function(){
@@ -220,6 +294,7 @@ _class= JClass.create( 'Player',
 		this.pcs.firePropertyChange('arg',null,this.argent);
 		this.pcs.firePropertyChange('atd',null,this.attitude);
 		this.pcs.firePropertyChange('pop',null,this.popularity);
+		this.pcs.firePropertyChange('tiredness',null,this.tiredness.get());
 		
 		this.backpack.fireInitialProperties();
 	},

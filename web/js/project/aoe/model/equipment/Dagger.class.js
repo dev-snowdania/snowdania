@@ -1,6 +1,6 @@
 JClass.import('aoe.model.equipment.Weapon');
 
-_class= JClass.create( 'Sword', aoe.Weapon,
+_class= JClass.create( 'Dagger', aoe.Weapon,
 {
 	initialize: function($super,pQuality,pDommage){
 		
@@ -9,9 +9,9 @@ _class= JClass.create( 'Sword', aoe.Weapon,
 		}
 		
 		if(typeof pDommage == 'undefined'){
-			pDommage = 50;
+			pDommage = {global: new aoe.Attribute(25), HitWithTip: new aoe.Attribute(50)};
 		}
 		
-		$super(aoe.Equipment.ONE_HAND,pQuality,5,pDommage,[1,2],this.getJsClassName());
+		$super(aoe.Equipment.ONE_HAND,pQuality,5,pDommage,[0,1],this.getJsClassName());
 	}
 });

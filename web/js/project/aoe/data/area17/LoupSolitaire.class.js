@@ -12,8 +12,8 @@ _class= JClass.create( 'LoupSolitaire', aoe.LivingInteraction,
 	initialize: function($super){
 		$super(
 				"Loup Solitaire",
-				"Un loup soltaire n'attaquera que s'il est vraiment affamé.",
-				500,
+				"Le loup solitaire s'est fait exclure de la meute suite à une attaque ratée de cervidé, au moment ou la meute en avait le plus besoin. En attendant de trouver une louve et former un couple alpha, le loup solitaire parcours les forets et les landes là où la nourriture se fait rare. Il a de grande chance d'être hostile et s'attaquera facilement à un individu solitaire.",
+				300,
 				10
 				);
 		this.logMsg='un loup solitaire vous attaque!';
@@ -21,7 +21,7 @@ _class= JClass.create( 'LoupSolitaire', aoe.LivingInteraction,
 		var run = new aoe.Running(80);
 		this.skills.add(run,run.getJsClassName());
 		
-		var wrestling = new aoe.Wrestling(60);
+		var wrestling = new aoe.Wrestling(90);
 		this.skills.add(wrestling,wrestling.getJsClassName());
 		
 		//var stealth = new aoe.Stealth(70);
@@ -42,8 +42,17 @@ _class= JClass.create( 'LoupSolitaire', aoe.LivingInteraction,
 			
 			if(pInteractiveSession.getDistance()>1){
 				action = this.actionManager.get("MoveForward");
-			}else{
-			
+				if(!action.checkStatus()){
+					action = this.actionManager.get("DoNothing");
+				}
+			}else if(pInteractiveSession.getDistance()==1){
+				action = this.actionManager.get("Catch");
+				if(!action.checkStatus()){
+					console.log('oups no!');
+					action = this.actionManager.get("DoNothing");
+				}
+			}
+			else{
 				if(pInteractiveSession.getTurnCounter()==1){
 					//try to sneak
 					//action = this.actionManager.get("Sneak");

@@ -3,10 +3,14 @@ JClass.import('aoe.view.InteractionWindow');
 JClass.import('aoe.model.action.ScratchByClaw');
 JClass.import('aoe.model.action.ShotArrow');
 JClass.import('aoe.model.action.HitWithEdge');
+JClass.import('aoe.model.action.HitWithTip');
 JClass.import('aoe.model.action.RunAway');
+JClass.import('aoe.model.action.GetOut');
+JClass.import('aoe.model.action.Catch');
 JClass.import('aoe.model.action.MoveForward');
 JClass.import('aoe.model.action.DoNothing');
 JClass.import('aoe.model.action.Target');
+JClass.import('aoe.model.action.SwitchEquipment');
 
 JClass.import('aoe.model.ActionManager');
 
@@ -41,14 +45,26 @@ _class=JClass.create("InteractionController",{
 		var moveForward = new aoe.MoveForward();
 		actions.push(moveForward);
 		
+		var getOut = new aoe.GetOut();
+		actions.push(getOut);
+		
+		var skCatch = new aoe.Catch();
+		actions.push(skCatch);
+		
 		var shotArrow = new aoe.ShotArrow();
 		actions.push(shotArrow);
 		
 		var hitWithEdge = new aoe.HitWithEdge();
 		actions.push(hitWithEdge);
 		
+		var hitWithTip = new aoe.HitWithTip();
+		actions.push(hitWithTip);
+		
 		var scratchByClaw = new aoe.ScratchByClaw();
 		actions.push(scratchByClaw);
+		
+		var switchEquipment = new aoe.SwitchEquipment();
+		actions.push(switchEquipment);
 		
 		var actions1 = new aoe.ActionManager();
 		var actions2 = new aoe.ActionManager();
@@ -97,7 +113,7 @@ _class=JClass.create("InteractionController",{
 		this.interactiveSession.getPlayer().getBackpack().addListener(this.popup);
 		this.interactiveSession.getInteraction().getPropertyChangeSupport().addListener(this.popup);
 		
-		var act1;
+		/*var act1;
 		actions1.reset();
 		while((act1=actions1.next())){
 			act1.getPropertyChangeSupport().addListener(this.popup);
@@ -105,7 +121,7 @@ _class=JClass.create("InteractionController",{
 			if(eqp){
 				eqp.getPropertyChangeSupport().addListener(this.popup);
 			}
-		}
+		}*/
 		
 		this.interactiveSession.getInteraction().fireInitialProperties();
 		
@@ -137,13 +153,16 @@ _class=JClass.create("InteractionController",{
 		var skill,equipment;
 		
 		if(pSkill){
-			var skill = player.getSkills(true).getByJsClassName(pSkill);
+			var skill = player.getSkills().getByJsClassName(pSkill);
 			skill = skill[0];
 		}
 		
 		if(pEquipment){
-			var equipment = player.getCurrentHand(true).get(pEquipment);
+			var equipment = player.getCurrentHand().get(pEquipment.toString());
 		}
+		
+		console.log(skill);
+		console.log(equipment);
 		
 		pAction.checkStatus(skill,equipment);
 		
@@ -165,7 +184,7 @@ _class=JClass.create("InteractionController",{
 		}
 		
 		if(pEquipment){
-			var equipment = player.getCurrentHand(true).get(pEquipment);
+			var equipment = player.getCurrentHand().get(pEquipment.toString());
 		}
 		
 		var r=pAction.execute(skill,equipment);
@@ -174,6 +193,88 @@ _class=JClass.create("InteractionController",{
 			this.interactiveSession.changeTurn();
 		}
 		
-	}
+	},
+	
+	executeSwitchEquipment : function(pAction,pEqpBackpack,pEqpCurrentHand){
+		
+		if(this.interactiveSession.getTurn()==aoe.InteractiveSession.PLAYER){
+			player = this.interactiveSession.getPlayer();
+		}else{
+			player = this.interactiveSession.getInteraction();
+		}
+		
+		var skill,equipment,equipmentToSwitch,direction = null;
+		
+		if(pEqpBackpack=='addToBackpack'){
+			direction = 'addToBackpack';
+			if(pEqpCurrentHand!=''){
+				equipmentToSwitch = player.getCurrentHand().get(pEqpCurrentHand);
+			}else{
+				console.log('un equipment must choose in current hand');
+				return;
+			}
+			
+		}else if(pEqpCurrentHand=='addToCurrentHand'){
+			direction = 'addToCurrentHand';
+			if(pEqpBackpack!=''){
+				equipmentToSwitch = player.getBackpack().get(pEqpBackpack);
+			}else{
+				console.log('un equipment must choose in backpack');
+				return;
+			}
+			
+		}else{
+			console.log("vous devez indiquer dans quel conteneur ajouter l'objet");
+			return;
+		}
+		
+		pAction.setEquipmentToSwitch(equipmentToSwitch,direction);
+		
+		var r=pAction.execute(skill,equipment);
+		
+		if(r){
+			this.interactiveSession.changeTurn();
+		}
+		
+	},
+	
+	checkSwitchEquipment : function(pAction,pEqpBackpack,pEqpCurrentHand){
+		
+		if(this.interactiveSession.getTurn()==aoe.InteractiveSession.PLAYER){
+			player = this.interactiveSession.getPlayer();
+		}else{
+			player = this.interactiveSession.getInteraction();
+		}
+		
+		var skill,equipment,equipmentToSwitch,direction = null;
+		
+		if(pEqpBackpack=='addToBackpack'){
+			direction = 'addToBackpack';
+			if(pEqpCurrentHand!=''){
+				equipmentToSwitch = player.getCurrentHand().get(pEqpCurrentHand);
+			}else{
+				//console.log('un equipment must choose in current hand');
+				//return;
+			}
+			
+		}else if(pEqpCurrentHand=='addToCurrentHand'){
+			direction = 'addToCurrentHand';
+			if(pEqpBackpack!=''){
+				equipmentToSwitch = player.getBackpack().get(pEqpBackpack);
+			}else{
+				//console.log('un equipment must choose in backpack');
+				//return;
+			}
+			
+		}else{
+			//console.log("vous devez indiquer dans quel conteneur ajouter l'objet");
+			//return;
+		}
+		
+		//console.log(equipmentToSwitch+","+direction);
+		
+		pAction.checkStatus(equipmentToSwitch,direction);
+		
+	},
  
 });

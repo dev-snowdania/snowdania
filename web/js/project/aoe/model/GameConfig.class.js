@@ -1,8 +1,8 @@
 /* Constantes du jeu */
 _class=-1;
 GameConfig = {
-	caseWidth:15,
-	caseHeight:15,
+	caseWidth:5,
+	caseHeight:5,
 	
 	getCaseWidth: function() {
 		return this.caseWidth;

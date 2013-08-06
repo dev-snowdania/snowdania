@@ -6,7 +6,7 @@ _class= JClass.create( 'Target', aoe.Action,
 		
 		$super();
 		this.skillClassName = null;
-		this.equipmentClassName = null;
+		this.equipmentClassName = [];
 		this.label = aoe.getLang('ActDoNothingLabel');
 		this.description = aoe.getLang('ActDoNothingDesc');
 		this.logMessage = aoe.getLang('ActDoNothingLog');
